@@ -1,0 +1,9 @@
+package eu.mobile.application.collector
+
+import AppComponent
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class MyApplication: Application() {
+}
