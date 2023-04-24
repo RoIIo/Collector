@@ -13,47 +13,26 @@
         android:layout_height="match_parent"
         tools:context=".ui.main.MainFragment">
 
-        <TextView
-            android:id="@+id/textView"
+        <ListView
+            android:id="@+id/category_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/clickme"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.onClick()}"
-            android:text="CLICK ME"
-            app:layout_constraintEnd_toStartOf="@id/loadcategory"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@id/category"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-        <Button
-            android:id="@+id/loadcategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:layout_margin="20dp"
+            android:onClick="@{() -> viewModel.addCategoryPressed()}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="LOAD CATEGORY"
-            android:onClick="@{() -> viewModel.onClickLoad()}"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintStart_toEndOf="@id/clickme"/>
+            app:srcCompat="@android:drawable/ic_input_add" />
 
-        <Button
-            android:id="@+id/category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="ADD CATEGORY"
-            android:onClick="@{() -> viewModel.onClickCategory()}"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toStartOf="@id/clickme"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

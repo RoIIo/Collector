@@ -18,9 +18,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
-        toolbar.subtitle = "Menu główne"
-        setSupportActionBar(toolbar)
+        //val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
+        //toolbar.subtitle = "Menu główne"
+        //setSupportActionBar(toolbar)
         registerEventBusListener()
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
