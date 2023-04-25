@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="eu.mobile.application.collector.fragment.mainMenu.MainViewModel" />
+            type="eu.mobile.application.collector.fragment.categoryList.CategoryListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

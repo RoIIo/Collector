@@ -1,4 +1,4 @@
-package eu.mobile.application.collector.fragment.mainMenu
+package eu.mobile.application.collector.fragment.categoryList
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,38 +6,38 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
-import eu.mobile.application.collector.databinding.FragmentMainBinding
+import eu.mobile.application.collector.databinding.FragmentCategoryListBinding
 import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.event.ErrorHandler
 import eu.mobile.application.collector.event.Message
-import eu.mobile.application.collector.fragment.BaseFragment
 import java.util.logging.Level
 import java.util.logging.Logger
 
 @AndroidEntryPoint
-class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
+class CategoryListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
-        val logger = Logger.getLogger(MainFragment::class.simpleName)
+        fun newInstance() = CategoryListFragment()
+        val logger = Logger.getLogger(CategoryListFragment::class.simpleName)
 
     }
-    private lateinit var viewBinding: FragmentMainBinding
-    private val viewModel by viewModels<MainViewModel>()
+    private lateinit var viewBinding: FragmentCategoryListBinding
+    private val viewModel by viewModels<CategoryListViewModel>()
     private lateinit var arrayAdapter: ArrayAdapter<*>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_main, container, false)
-        viewBinding = FragmentMainBinding.bind(root).apply {
-            viewModel = this@MainFragment.viewModel
+        val root = inflater.inflate(R.layout.fragment_category_list, container, false)
+        viewBinding = FragmentCategoryListBinding.bind(root).apply {
+            viewModel = this@CategoryListFragment.viewModel
         }
         viewBinding.lifecycleOwner = this.viewLifecycleOwner
 
@@ -71,7 +71,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             logger.log(Level.INFO, "Go to category details Time: $id")
             val category = viewModel.categoryArray.value?.get(position)
             if(category!= null)
-                goToCategoryDetails(category)
+                goToPositionList(category)
             else
                 ErrorHandler.postMessageEvent(Message().apply { message = "Wystąpił błąd podczas klikniecia kategorii" })
 
@@ -105,9 +105,10 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             list.refreshDrawableState()
 
         }
-        viewModel.addCategoryPressed.observe(viewLifecycleOwner) {
+        viewModel.categoryEntryPressed.observe(viewLifecycleOwner) {
             logger.log(Level.INFO, "Add category pressed")
-            goToAddCategory()
+            if(it)
+                goToCategoryEntry()
         }
         viewModel.isLoaded.observe(viewLifecycleOwner) {
             logger.log(Level.INFO, "IsLoaded: $it")
@@ -125,11 +126,11 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     private fun showLoading() {
     }
 
-    private fun goToAddCategory(){
+    private fun goToCategoryEntry(){
+        findNavController().navigate(R.id.categoryEntryFragmentDestination)
     }
-    private fun goToCategoryDetails(category: Category){
-        val navController = findNavController()
-        navController.navigate(R.id.categoryDetailsFragmentDestination)
+    private fun goToPositionList(category: Category){
+        findNavController().navigate(R.id.positionListFragmentDestination)
     }
 
 

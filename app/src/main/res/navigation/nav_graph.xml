@@ -3,34 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/mainMenuFragmentDestination">
+    app:startDestination="@id/categoryListFragmentDestination">
     <fragment
-        android:id="@+id/mainMenuFragmentDestination"
-        android:name="eu.mobile.application.collector.fragment.mainMenu.MainFragment"
-        android:label="@string/mainMenuTitle"
-        tools:layout="@layout/fragment_main">
-    <action
-        android:id="@+id/action_mainMenuFragment_to_categoryDetailsFragment"
-        app:destination="@id/categoryDetailsFragmentDestination"
-        app:popUpToInclusive="true"/>
+        android:id="@+id/categoryListFragmentDestination"
+        android:name="eu.mobile.application.collector.fragment.categoryList.CategoryListFragment"
+        android:label="@string/categoryListTitle"
+        tools:layout="@layout/fragment_category_list">
+        <action
+            android:id="@+id/action_categoryListFragment_to_positionListFragment"
+            app:destination="@id/positionListFragmentDestination"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_categoryListFragment_to_categoryEntryFragment"
+            app:destination="@id/categoryEntryFragmentDestination"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
-        android:id="@+id/categoryDetailsFragmentDestination"
-        android:name="eu.mobile.application.collector.fragment.categoryDetails.CategoryDetailsFragment"
-        android:label="@string/categoryDetailsTitle"
-        tools:layout="@layout/fragment_category_details">
+        android:id="@+id/positionListFragmentDestination"
+        android:name="eu.mobile.application.collector.fragment.positionList.PositionListFragment"
+        android:label="@string/positionListTitle"
+        tools:layout="@layout/fragment_position_list">
         <action
-            android:id="@+id/action_categoryDetailsFragment_to_positionDetailsFragment"
+            android:id="@+id/action_positionListFragment_to_positionDetailsFragment"
             app:destination="@id/positionDetailsFragmentDestination"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_positionListFragment_to_positionEntryFragment"
+            app:destination="@id/positionEntryFragmentDestination"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/positionDetailsFragmentDestination"
-    android:name="eu.mobile.application.collector.fragment.positionDetails.PositionDetailsFragment"
-    android:label="@string/positionDetailsTitle"
-    tools:layout="@layout/fragment_position_details">
+        android:name="eu.mobile.application.collector.fragment.positionDetails.PositionDetailsFragment"
+        android:label="@string/positionDetailsTitle"
+        tools:layout="@layout/fragment_position_details"></fragment>
 
-    </fragment>
+    <fragment
+        android:id="@+id/positionEntryFragmentDestination"
+        android:name="eu.mobile.application.collector.fragment.positionEntry.PositionEntryFragment"
+        android:label="@string/positionEntryTitle"
+        tools:layout="@layout/fragment_position_entry"></fragment>
+    <fragment
+        android:id="@+id/categoryEntryFragmentDestination"
+        android:name="eu.mobile.application.collector.fragment.categoryEntry.CategoryEntryFragment"
+        android:label="@string/categoryEntryTitle"
+        tools:layout="@layout/fragment_category_entry"></fragment>
 </navigation>

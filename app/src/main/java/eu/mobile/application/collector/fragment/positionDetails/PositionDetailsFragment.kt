@@ -4,21 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
-import eu.mobile.application.collector.databinding.FragmentCategoryDetailsBinding
 import eu.mobile.application.collector.databinding.FragmentPositionDetailsBinding
-import eu.mobile.application.collector.fragment.BaseFragment
-import eu.mobile.application.collector.fragment.categoryDetails.CategoryDetailsFragment
-import eu.mobile.application.collector.fragment.categoryDetails.CategoryDetailsViewModel
-import eu.mobile.application.collector.fragment.mainMenu.MainFragment
+import eu.mobile.application.collector.fragment.categoryList.CategoryListFragment
 import java.util.logging.Logger
 @AndroidEntryPoint
-class PositionDetailsFragment : BaseFragment<FragmentPositionDetailsBinding, PositionDetailsViewModel>() {
+class PositionDetailsFragment : Fragment()  {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = CategoryListFragment()
         val logger = Logger.getLogger(PositionDetailsFragment::class.simpleName)
 
     }

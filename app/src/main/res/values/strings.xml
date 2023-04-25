@@ -2,7 +2,9 @@
     <string name="app_name">Aplikacja kolekcjonerska</string>
     <string name="fragment_main_fragment_category_delete_title">Usuń</string>
     <string name="fragment_main_fragment_category_delete_message">Czy napewno chcesz usunąć kategorię:\n</string>
-    <string name="mainMenuTitle">Menu Główne</string>
-    <string name="categoryDetailsTitle">Szczegóły kategorii</string>
-    <string name="positionDetailsTitle">Szczegóły</string>
+    <string name="categoryListTitle">Lista kategorii</string>
+    <string name="positionListTitle">Lista pozycji</string>
+    <string name="positionDetailsTitle">Szczegóły pozycji</string>
+    <string name="positionEntryTitle">Nowa pozycja</string>
+    <string name="categoryEntryTitle">Nowa kategoria</string>
 </resources>

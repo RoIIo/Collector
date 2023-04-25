@@ -1,5 +1,6 @@
-package eu.mobile.application.collector.fragment.mainMenu
+package eu.mobile.application.collector.fragment.categoryList
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,16 +16,17 @@ import java.util.logging.Logger
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(val categoryRepository: CategoryRepository): ViewModel() {
+class CategoryListViewModel @Inject constructor(val categoryRepository: CategoryRepository): ViewModel() {
     companion object {
-        val logger = Logger.getLogger(MainViewModel::class.simpleName)
+        val logger = Logger.getLogger(CategoryListViewModel::class.simpleName)
     }
-    var addCategoryPressed = MutableLiveData(false)
-    var categoryPressed = MutableLiveData(-1)
+    var categoryEntryPressedNotifier = MutableLiveData<Boolean>()
+    val categoryEntryPressed: LiveData<Boolean> = categoryEntryPressedNotifier
+
     var isLoaded = MutableLiveData(false)
     val categoryArray = MutableLiveData(arrayListOf<Category>())
     fun addCategoryPressed(){
-        addCategoryPressed.value = true
+        categoryEntryPressedNotifier.value = true
     }
     fun deleteCategory(position: Int){
         viewModelScope.launch {
@@ -44,6 +46,7 @@ class MainViewModel @Inject constructor(val categoryRepository: CategoryReposito
     }
 
     fun initialize(){
+        categoryEntryPressedNotifier.value = false
         loadCategories()
     }
 
