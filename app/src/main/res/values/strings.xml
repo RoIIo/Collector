@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Aplikacja kolekcjonerska</string>
+    <string name="fragment_main_fragment_category_delete_title">Usuń</string>
+    <string name="fragment_main_fragment_category_delete_message">Czy napewno chcesz usunąć kategorię:\n</string>
 </resources>

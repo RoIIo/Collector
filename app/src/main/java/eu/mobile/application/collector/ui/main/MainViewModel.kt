@@ -24,35 +24,27 @@ class MainViewModel @Inject constructor(val categoryRepository: CategoryReposito
     var addCategoryPressed = MutableLiveData(false)
     var categoryPressed = MutableLiveData(-1)
     var isLoaded = MutableLiveData(false)
-    var categoryArray: MutableLiveData<Array<Category>> = MutableLiveData(arrayOf())
-
-
+    val categoryArray = MutableLiveData(arrayListOf<Category>())
     fun addCategoryPressed(){
         addCategoryPressed.value = true
     }
-    fun categoryPressed(name: String){
-
-    }
-    fun onClick(){
-        ErrorHandler.postMessageEvent(Message().apply { message = "Nacisnieto" })
-    }
-
-    fun onClickLoad() {
+    fun deleteCategory(position: Int){
         viewModelScope.launch {
-            categoryRepository.getCategories().onSuccess {
-                ErrorHandler.postMessageEvent(Message().apply { message = it.firstOrNull()?.name ?: "BRAK" })
-            }
+            isLoaded.value = false
+
+            val id = categoryArray.value?.get(position)?.Id ?: return@launch
+            categoryRepository.deleteCategory(id)
+                .onSuccess {
+                    ErrorHandler.postMessageEvent(Message().apply { message = "Pomyślnie usunięto kategorię" })
+                    categoryArray.value?.removeAt(position)
+                }
                 .onFailure {
                     ErrorHandler.postErrorMessageEvent(it)
                 }
+                    isLoaded.value = true
         }
     }
-    fun onClickCategory() {
-        viewModelScope.launch {
-            categoryRepository.addCategory("TESTCATEGORY")
-        }
 
-    }
     fun initialize(){
         loadCategories()
     }
@@ -62,7 +54,7 @@ class MainViewModel @Inject constructor(val categoryRepository: CategoryReposito
             isLoaded.value = false
             categoryRepository.getCategories().onSuccess {
                 logger.log(Level.INFO,"get categories: $it")
-                categoryArray.value = it.toTypedArray()
+                categoryArray.value = ArrayList(it)
             }
                 .onFailure {
                     logger.log(Level.WARNING, "Failed to get categories: $it")

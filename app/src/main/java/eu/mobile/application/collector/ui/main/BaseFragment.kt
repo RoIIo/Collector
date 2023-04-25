@@ -11,23 +11,10 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
 
-    private var _binding: VB? = null
-
     // This property is only valid between onCreateView and onDestroyView.
-    protected val binding
-        get() = _binding
-            ?: throw IllegalStateException("Cannot access view in after view destroyed and before view creation")
-
-
     open fun setListeners() {
     }
 
     open fun setObservers() {
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -76,7 +76,7 @@ class DBHelper @Inject constructor(
     }
     fun deleteCategory(id: Int) : Boolean{
         var result = false
-        val query = "SELECT * $Categiories_table WHERE $ID_COL LIKE $id"
+        val query = "SELECT * from $Categiories_table WHERE $ID_COL = $id"
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
         if(cursor.moveToFirst())
