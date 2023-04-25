@@ -1,7 +1,5 @@
-package eu.mobile.application.collector.ui.main
+package eu.mobile.application.collector.fragment.mainMenu
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

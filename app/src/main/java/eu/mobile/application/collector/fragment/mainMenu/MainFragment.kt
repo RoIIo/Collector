@@ -1,4 +1,4 @@
-package eu.mobile.application.collector.ui.main
+package eu.mobile.application.collector.fragment.mainMenu
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
@@ -14,6 +15,7 @@ import eu.mobile.application.collector.databinding.FragmentMainBinding
 import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.event.ErrorHandler
 import eu.mobile.application.collector.event.Message
+import eu.mobile.application.collector.fragment.BaseFragment
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -126,6 +128,8 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     private fun goToAddCategory(){
     }
     private fun goToCategoryDetails(category: Category){
+        val navController = findNavController()
+        navController.navigate(R.id.categoryDetailsFragmentDestination)
     }
 
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/mainMenuFragmentDestination">
+    <fragment
+        android:id="@+id/mainMenuFragmentDestination"
+        android:name="eu.mobile.application.collector.fragment.mainMenu.MainFragment"
+        android:label="@string/mainMenuTitle"
+        tools:layout="@layout/fragment_main">
+    <action
+        android:id="@+id/action_mainMenuFragment_to_categoryDetailsFragment"
+        app:destination="@id/categoryDetailsFragmentDestination"
+        app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/categoryDetailsFragmentDestination"
+        android:name="eu.mobile.application.collector.fragment.categoryDetails.CategoryDetailsFragment"
+        android:label="@string/categoryDetailsTitle"
+        tools:layout="@layout/fragment_category_details">
+        <action
+            android:id="@+id/action_categoryDetailsFragment_to_positionDetailsFragment"
+            app:destination="@id/positionDetailsFragmentDestination"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/positionDetailsFragmentDestination"
+    android:name="eu.mobile.application.collector.fragment.positionDetails.PositionDetailsFragment"
+    android:label="@string/positionDetailsTitle"
+    tools:layout="@layout/fragment_position_details">
+
+    </fragment>
+</navigation>

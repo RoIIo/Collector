@@ -5,13 +5,12 @@
     <data>
         <variable
             name="viewModel"
-            type="eu.mobile.application.collector.ui.main.MainViewModel" />
+            type="eu.mobile.application.collector.fragment.mainMenu.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.main.MainFragment">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/categories"

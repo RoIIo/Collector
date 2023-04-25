@@ -2,12 +2,9 @@ package eu.mobile.application.collector.repository
 
 import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.event.ErrorHandler
-import eu.mobile.application.collector.event.Message
-import eu.mobile.application.collector.ui.main.MainViewModel
 import eu.mobile.application.kolekcjoner.DBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.greenrobot.eventbus.EventBus
 import java.util.logging.Logger
 import javax.inject.Inject
 
