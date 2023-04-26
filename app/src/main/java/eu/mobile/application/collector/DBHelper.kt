@@ -2,12 +2,11 @@ package eu.mobile.application.kolekcjoner
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.mobile.application.collector.entity.Category
-import eu.mobile.application.collector.entity.Details
+import eu.mobile.application.collector.entity.Position
 import eu.mobile.application.collector.event.ErrorHandler
 import eu.mobile.application.collector.event.Message
 import javax.inject.Inject
@@ -89,8 +88,8 @@ class DBHelper @Inject constructor(
         db.close()
         return result
     }
-    fun getDetails(categoryId: Int) : List<Details> {
-        ErrorHandler.postMessageEvent(Message().apply { message = "Not implemented" })
+    fun getPositions(categoryId: Int) : List<Position> {
+        ErrorHandler.postMessageEvent(Message().apply { message = "Not implemented categoryId = $categoryId" })
         return listOf()
     }
 }

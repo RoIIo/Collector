@@ -6,20 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentPositionDetailsBinding
+import eu.mobile.application.collector.entity.Position
 import eu.mobile.application.collector.fragment.categoryList.CategoryListFragment
 import java.util.logging.Logger
 @AndroidEntryPoint
 class PositionDetailsFragment : Fragment()  {
 
     companion object {
-        fun newInstance() = CategoryListFragment()
+        fun newInstance() = PositionDetailsFragment()
         val logger = Logger.getLogger(PositionDetailsFragment::class.simpleName)
 
     }
-
+    val args: PositionDetailsFragmentArgs by navArgs()
     private lateinit var viewBinding: FragmentPositionDetailsBinding
     private val viewModel by viewModels<PositionDetailsViewModel>()
 
@@ -38,5 +40,8 @@ class PositionDetailsFragment : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val position = args.position
+        viewModel.initialize(position)
     }
 }

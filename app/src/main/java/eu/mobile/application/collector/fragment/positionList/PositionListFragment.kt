@@ -7,19 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentPositionListBinding
-import eu.mobile.application.collector.fragment.categoryList.CategoryListFragment
 import java.util.logging.Logger
 @AndroidEntryPoint
 class PositionListFragment : Fragment()  {
 
     companion object {
-        fun newInstance() = CategoryListFragment()
+        fun newInstance() = PositionListFragment()
         val logger = Logger.getLogger(PositionListFragment::class.simpleName)
 
     }
+    private val args: PositionListFragmentArgs by navArgs()
     private lateinit var viewBinding: FragmentPositionListBinding
     private val viewModel by viewModels<PositionListViewModel>()
 
@@ -37,11 +38,16 @@ class PositionListFragment : Fragment()  {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initialize()
+        var categoryId = args.categoryId
+        viewModel.initialize(categoryId)
         setupObservers()
     }
 
     private fun setupObservers(){
+
+        viewModel.positionListNotifier.observe(viewLifecycleOwner){
+
+        }
         viewModel.positionPressed.observe(viewLifecycleOwner){
             if(it)
                 goToPositionEntry()

@@ -12,7 +12,12 @@
         <action
             android:id="@+id/action_categoryListFragment_to_positionListFragment"
             app:destination="@id/positionListFragmentDestination"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true">
+            <argument
+                android:name="categoryId"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </action>
 
         <action
             android:id="@+id/action_categoryListFragment_to_categoryEntryFragment"
@@ -25,10 +30,18 @@
         android:name="eu.mobile.application.collector.fragment.positionList.PositionListFragment"
         android:label="@string/positionListTitle"
         tools:layout="@layout/fragment_position_list">
+        <argument
+            android:name="categoryId"
+            android:defaultValue="-1"
+            app:argType="integer" />
         <action
             android:id="@+id/action_positionListFragment_to_positionDetailsFragment"
             app:destination="@id/positionDetailsFragmentDestination"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true">
+            <argument
+                android:name="position"
+                app:argType="eu.mobile.application.collector.entity.Position" />
+        </action>
 
         <action
             android:id="@+id/action_positionListFragment_to_positionEntryFragment"
@@ -40,13 +53,22 @@
         android:id="@+id/positionDetailsFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.positionDetails.PositionDetailsFragment"
         android:label="@string/positionDetailsTitle"
-        tools:layout="@layout/fragment_position_details"></fragment>
+        tools:layout="@layout/fragment_position_details">
+        <argument
+            android:name="position"
+            app:argType="eu.mobile.application.collector.entity.Position" />
+    </fragment>
 
     <fragment
         android:id="@+id/positionEntryFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.positionEntry.PositionEntryFragment"
         android:label="@string/positionEntryTitle"
-        tools:layout="@layout/fragment_position_entry"></fragment>
+        tools:layout="@layout/fragment_position_entry">
+        <argument
+            android:name="categoryId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/categoryEntryFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.categoryEntry.CategoryEntryFragment"

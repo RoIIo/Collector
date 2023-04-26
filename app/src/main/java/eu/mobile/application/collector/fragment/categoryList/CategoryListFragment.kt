@@ -130,7 +130,12 @@ class CategoryListFragment : Fragment() {
         findNavController().navigate(R.id.categoryEntryFragmentDestination)
     }
     private fun goToPositionList(category: Category){
-        findNavController().navigate(R.id.positionListFragmentDestination)
+        if(category.Id == null){
+            ErrorHandler.postMessageEvent(Message().apply { message="There is no ID in category: ${category.name}" })
+            return
+        }
+        val action = CategoryListFragmentDirections.actionCategoryListFragmentToPositionListFragment(category.Id!!)
+        findNavController().navigate(action)
     }
 
 
