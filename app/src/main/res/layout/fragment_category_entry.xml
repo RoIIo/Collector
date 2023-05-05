@@ -9,5 +9,26 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/categoryEntry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@={viewModel.categoryEntryNotifier}"
+            android:hint="@string/fragment_category_entry_category_name_entry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/categoryButtonEntry"/>
+        <Button
+            android:id="@+id/categoryButtonEntry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{()->viewModel.addCategory()}"
+            android:text="@string/fragment_category_entry_add__button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryEntry"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
