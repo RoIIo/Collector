@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
@@ -17,6 +18,7 @@ import eu.mobile.application.collector.event.SubtitleMessage
 import eu.mobile.application.collector.fragment.categoryList.CategoryListFragment
 import eu.mobile.application.collector.fragment.categoryList.CategoryListViewModel
 import eu.mobile.application.collector.fragment.positionDetails.PositionDetailsViewModel
+import eu.mobile.application.collector.fragment.positionList.PositionListFragmentDirections
 import java.util.logging.Logger
 
 @AndroidEntryPoint
@@ -46,7 +48,21 @@ class PositionEntryFragment : Fragment()  {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initialize()
+        viewModel.initialize(args.category)
+        setupObservers()
         EventBusHandler.postSubtitle(SubtitleMessage().apply { name = args.category.name })
+    }
+
+    private fun setupObservers() {
+        viewModel.addedPositionLiveData.observe(viewLifecycleOwner){
+            if(it){
+                goToPositionList()
+            }
+        }
+    }
+
+    private fun goToPositionList() {
+        if(!findNavController().popBackStack(R.id.positionListFragmentDestination,false))
+            findNavController().navigate(R.id.positionListFragmentDestination)
     }
 }

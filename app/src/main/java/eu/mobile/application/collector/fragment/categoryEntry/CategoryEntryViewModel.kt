@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
 import eu.mobile.application.collector.repository.CategoryRepository
@@ -25,7 +26,7 @@ class CategoryEntryViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            repository.addCategory(categoryEntryNotifier.value!!)
+            repository.addCategory(Category().apply { name = categoryEntryNotifier.value!!})
                 .onSuccess {
                     EventBusHandler.postMessage(Message().apply {message = "Dodano kategorię"})
                     addedCategoryNotifier.value = true

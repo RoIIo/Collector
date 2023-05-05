@@ -20,7 +20,7 @@ class DBHelper @Inject constructor(
 
     companion object{
         private val DATABASE_NAME = "Collector.db"
-        private val DATABASE_VERSION = 2
+        private val DATABASE_VERSION = 4
 
         val CATEGORIES_TABLE = "categories"
         val CATEGORY_ID = "id"
@@ -29,18 +29,22 @@ class DBHelper @Inject constructor(
         val POSITION_TABLE = "positions"
         val POSITION_ID = "id"
         val POSITION_NAME = "name"
+        val POSITION_CATEGORY_ID = "category_id"
 
     }
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(tableCategoriesQuery)
-        db.execSQL(tableDetailsQuery)
+        db.execSQL(tablePositionsQuery)
     }
     private val tableCategoriesQuery = "CREATE TABLE IF NOT EXISTS " + CATEGORIES_TABLE + " (" +
             CATEGORY_ID + " INTEGER PRIMARY KEY, " +
             CATEGORY_NAME + " TEXT)"
 
-    private val tableDetailsQuery = "CREATE TABLE IF NOT EXISTS " + POSITION_TABLE + " (" +
-            CATEGORY_ID + " INTEGER PRIMARY KEY)"
+    private val tablePositionsQuery = "CREATE TABLE IF NOT EXISTS " + POSITION_TABLE + " (" +
+            POSITION_ID + " INTEGER PRIMARY KEY," +
+            POSITION_NAME + " TEXT," +
+            POSITION_CATEGORY_ID + " INTEGER," +
+            " FOREIGN KEY($POSITION_CATEGORY_ID) REFERENCES $CATEGORIES_TABLE($CATEGORY_ID))"
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
         db.execSQL("DROP TABLE IF EXISTS $CATEGORIES_TABLE")
@@ -48,12 +52,14 @@ class DBHelper @Inject constructor(
         onCreate(db)
     }
 
-    fun addCategory(category: String){
+    fun addCategory(category: Category): Category{
         val values = ContentValues()
-        values.put(CATEGORY_NAME, category)
+        values.put(CATEGORY_NAME, category.name)
         val db = this.writableDatabase
-        db.insert(CATEGORIES_TABLE, null, values)
+        val id = db.insert(CATEGORIES_TABLE, null, values)
         db.close()
+        category.Id = id.toInt()
+        return category
     }
     fun getCategories(): List<Category>{
         val query = "SELECT * FROM $CATEGORIES_TABLE"
@@ -91,7 +97,7 @@ class DBHelper @Inject constructor(
         return result
     }
     fun getPositions(categoryId: Int) : List<Position> {
-        val query = "SELECT * FROM $POSITION_TABLE"
+        val query = "SELECT * FROM $POSITION_TABLE where $POSITION_CATEGORY_ID = $categoryId"
         val db = this.readableDatabase
 
         val cursor = db.rawQuery(query, null)
@@ -102,15 +108,28 @@ class DBHelper @Inject constructor(
             var position: Position?
             val id = cursor.getInt(0)
             val name = cursor.getString(1)
+            val category = cursor.getInt(2)
             position = Position().apply {
                 this.Id = id
-                this.name = name}
+                this.name = name
+                this.categoryId = category}
             positions.add(position)
         }
         db.close()
         return positions
     }
 
+    fun addPosition(position: Position): Position{
+        val values = ContentValues()
+        values.put(POSITION_NAME, position.name)
+        values.put(POSITION_CATEGORY_ID, position.categoryId)
+
+        val db = this.writableDatabase
+        val id = db.insert(POSITION_TABLE, null, values)
+        db.close()
+        position.Id = id.toInt()
+        return position
+    }
     fun deletePosition(id: Int) : Boolean{
         var result = false
         val query = "SELECT * from $POSITION_TABLE WHERE $POSITION_ID = $id"

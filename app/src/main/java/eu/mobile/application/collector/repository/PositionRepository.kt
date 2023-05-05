@@ -20,6 +20,19 @@ class PositionRepository  @Inject constructor(val db: DBHelper) {
             }
         }
     }
+
+    suspend fun addPosition(position: Position): Result<Position>{
+        return withContext(Dispatchers.IO) {
+            try {
+                val result  = db.addPosition(position)
+                Result.success(result)
+            }
+            catch (ex: Exception) {
+                EventBusHandler.postErrorMessage(ex)
+                Result.failure(ex)
+        }
+        }
+    }
     suspend fun deletePosition(positionId: Int): Result<Boolean>{
         return withContext(Dispatchers.IO) {
             try {

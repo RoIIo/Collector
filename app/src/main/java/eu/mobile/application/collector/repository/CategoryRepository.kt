@@ -26,7 +26,7 @@ class CategoryRepository @Inject constructor(val db: DBHelper) {
         }
     }
 
-    suspend fun addCategory(category: String): Result<Unit> {
+    suspend fun addCategory(category: Category): Result<Category> {
         return withContext(Dispatchers.IO) {
             try {
                 val result = db.addCategory(category)

@@ -15,5 +15,7 @@
     <string name="positionDetailsTitle">Szczegóły pozycji</string>
     <string name="positionEntryTitle">Nowa pozycja</string>
     <string name="categoryEntryTitle">Nowa kategoria</string>
+    <string name="fragment_position_entry_add_button">Dodaj</string>
+    <string name="fragment_position_entry_position_name_entry">Wpisz nazwę</string>
 
 </resources>

@@ -7,6 +7,7 @@ import androidx.annotation.Keep
 class Position() : Parcelable {
     var Id: Int? = null
     var name: String? = null
+    var categoryId: Int? = null
 
     constructor(parcel: Parcel) : this() {
         Id = parcel.readValue(Int::class.java.classLoader) as? Int

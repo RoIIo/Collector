@@ -25,7 +25,7 @@ class PositionListViewModel @Inject constructor(
     }
 
     var isLoaded = MutableLiveData(false)
-
+    var category: Category? = null
     private val positionPressedNotifier = MutableLiveData<Boolean>()
     val positionPressed: LiveData<Boolean> = positionPressedNotifier
 
@@ -54,9 +54,10 @@ class PositionListViewModel @Inject constructor(
             isLoaded.value = true
         }
     }
-    fun initialize(categoryId: Int){
+    fun initialize(category: Category){
         positionPressedNotifier.value = false
-        loadPositions(categoryId)
+        this.category = category
+        loadPositions(category.Id!!)
     }
 
     private fun loadPositions(categoryId: Int) {

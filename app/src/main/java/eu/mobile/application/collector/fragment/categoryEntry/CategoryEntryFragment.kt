@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentCategoryEntryBinding
-import eu.mobile.application.collector.databinding.FragmentCategoryListBinding
-import eu.mobile.application.collector.fragment.categoryList.CategoryListFragment
-import eu.mobile.application.collector.fragment.categoryList.CategoryListViewModel
 import java.util.logging.Logger
 
 @AndroidEntryPoint
@@ -47,12 +43,12 @@ class CategoryEntryFragment : Fragment()  {
     private fun setupObservers() {
         viewModel.addedCategoryLiveData.observe(viewLifecycleOwner){
             if(it){
-                goToListCategory()
+                goToCategoryList()
             }
         }
     }
 
-    private fun goToListCategory(){
+    private fun goToCategoryList(){
         if(!findNavController().popBackStack(R.id.categoryListFragmentDestination,false))
             findNavController().navigate(R.id.categoryListFragmentDestination)
     }

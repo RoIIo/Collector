@@ -48,8 +48,8 @@ class PositionListFragment : Fragment()  {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var category = args.category
-        viewModel.initialize(category.Id!!)
+        val category = args.category
+        viewModel.initialize(category)
         setupList()
         setupObservers()
         EventBusHandler.postSubtitle(SubtitleMessage().apply { name = category.name})
@@ -121,16 +121,18 @@ class PositionListFragment : Fragment()  {
         }
     }
 
-    private fun goToPositionDetails(position: Position) {
-        val action = PositionListFragmentDirections.actionPositionListFragmentToPositionDetailsFragment(position)
-        findNavController().navigate(action)
-    }
+
 
     private fun hideLoading() {
 
     }
 
     private fun showLoading() {
+    }
+
+    private fun goToPositionDetails(position: Position) {
+        val action = PositionListFragmentDirections.actionPositionListFragmentToPositionDetailsFragment(position)
+        findNavController().navigate(action)
     }
     private fun goToPositionEntry(){
         val action = PositionListFragmentDirections.actionPositionListFragmentToPositionEntryFragment(args.category)
