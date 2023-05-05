@@ -1,7 +1,7 @@
 package eu.mobile.application.collector.repository
 
 import eu.mobile.application.collector.entity.Position
-import eu.mobile.application.collector.event.ErrorHandler
+import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.kolekcjoner.DBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,7 +15,7 @@ class PositionRepository  @Inject constructor(val db: DBHelper) {
                 Result.success(result)
             }
             catch (ex: Exception) {
-                ErrorHandler.postErrorMessageEvent(ex)
+                EventBusHandler.postErrorMessage(ex)
                 Result.failure(ex)
             }
         }

@@ -5,4 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 @HiltViewModel
 class PositionEntryViewModel @Inject constructor(): ViewModel() {
+    fun initialize(){
+
+    }
 }

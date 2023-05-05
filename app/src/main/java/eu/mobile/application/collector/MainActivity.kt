@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.event.Message
+import eu.mobile.application.collector.event.SubtitleMessage
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -42,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message.message , Toast.LENGTH_SHORT).show()
     }
 
+    @Subscribe(threadMode =  ThreadMode.MAIN)
+    fun onSubtitleMessageReceived(subtitle: SubtitleMessage) {
+        supportActionBar?.subtitle = subtitle.name
+    }
     private fun registerEventBusListener() {
         EventBus.getDefault().register(this)
     }

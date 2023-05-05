@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.mobile.application.collector.entity.Category
-import eu.mobile.application.collector.event.ErrorHandler
+import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
 import eu.mobile.application.collector.repository.CategoryRepository
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
     val categoryEntryPressed: LiveData<Boolean> = categoryEntryPressedNotifier
 
     var isLoaded = MutableLiveData(false)
-    val categoryArray = MutableLiveData(arrayListOf<Category>())
+    val categoryArray: MutableLiveData<ArrayList<Category>> = MutableLiveData(arrayListOf())
     fun addCategoryPressed(){
         categoryEntryPressedNotifier.value = true
     }
@@ -35,11 +35,16 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
             val id = categoryArray.value?.get(position)?.Id ?: return@launch
             categoryRepository.deleteCategory(id)
                 .onSuccess {
-                    ErrorHandler.postMessageEvent(Message().apply { message = "Pomyślnie usunięto kategorię" })
+                    logger.info("Pomyślnie usunięto kategorię")
+                    EventBusHandler.postMessage(Message().apply { message = "Pomyślnie usunięto kategorię" })
                     categoryArray.value?.removeAt(position)
+                    val newList = MutableLiveData(arrayListOf<Category>())
+                    newList.value?.addAll(categoryArray.value!!)
+                    categoryArray.value = newList.value
                 }
                 .onFailure {
-                    ErrorHandler.postErrorMessageEvent(it)
+                    EventBusHandler.postErrorMessage(it)
+                    logger.warning("Nie udało się usunąć kategorii: $it")
                 }
                     isLoaded.value = true
         }
@@ -54,7 +59,7 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
         viewModelScope.launch {
             isLoaded.value = false
             categoryRepository.getCategories().onSuccess {
-                logger.log(Level.INFO,"get categories: $it")
+                logger.log(Level.INFO,"get categories: $it. Size: ${it.size}")
                 categoryArray.value = ArrayList(it)
             }
                 .onFailure {

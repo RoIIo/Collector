@@ -11,6 +11,8 @@ import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentPositionListBinding
+import eu.mobile.application.collector.event.EventBusHandler
+import eu.mobile.application.collector.event.SubtitleMessage
 import java.util.logging.Logger
 @AndroidEntryPoint
 class PositionListFragment : Fragment()  {
@@ -38,9 +40,10 @@ class PositionListFragment : Fragment()  {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var categoryId = args.categoryId
-        viewModel.initialize(categoryId)
+        var category = args.category
+        viewModel.initialize(category.Id!!)
         setupObservers()
+        EventBusHandler.postSubtitle(SubtitleMessage().apply { name = category.name})
     }
 
     private fun setupObservers(){
@@ -55,6 +58,7 @@ class PositionListFragment : Fragment()  {
     }
 
     private fun goToPositionEntry(){
-        findNavController().navigate(R.id.positionEntryFragmentDestination)
+        val action = PositionListFragmentDirections.actionPositionListFragmentToPositionEntryFragment(args.category)
+        findNavController().navigate(action)
     }
 }

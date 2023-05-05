@@ -11,6 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentPositionDetailsBinding
 import eu.mobile.application.collector.entity.Position
+import eu.mobile.application.collector.event.EventBusHandler
+import eu.mobile.application.collector.event.SubtitleMessage
 import eu.mobile.application.collector.fragment.categoryList.CategoryListFragment
 import java.util.logging.Logger
 @AndroidEntryPoint
@@ -43,5 +45,6 @@ class PositionDetailsFragment : Fragment()  {
 
         val position = args.position
         viewModel.initialize(position)
+        EventBusHandler.postSubtitle(SubtitleMessage().apply { name = position.name })
     }
 }

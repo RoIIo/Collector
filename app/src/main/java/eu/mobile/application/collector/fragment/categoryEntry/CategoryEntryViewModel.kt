@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.mobile.application.collector.event.ErrorHandler
+import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
 import eu.mobile.application.collector.repository.CategoryRepository
 import kotlinx.coroutines.launch
@@ -21,18 +21,18 @@ class CategoryEntryViewModel @Inject constructor(
 
     fun addCategory(){
         if(categoryEntryNotifier.value.isNullOrEmpty()){
-            ErrorHandler.postMessageEvent(Message().apply { message = "Musisz wpisać nazwę kategorii" })
+            EventBusHandler.postMessage(Message().apply { message = "Musisz wpisać nazwę kategorii" })
             return
         }
         viewModelScope.launch {
             repository.addCategory(categoryEntryNotifier.value!!)
                 .onSuccess {
-                    ErrorHandler.postMessageEvent(Message().apply {message = "Dodano kategorię"})
+                    EventBusHandler.postMessage(Message().apply {message = "Dodano kategorię"})
                     addedCategoryNotifier.value = true
 
                 }
                 .onFailure {
-                    ErrorHandler.postErrorMessageEvent(it)
+                    EventBusHandler.postErrorMessage(it)
                 }
         }
 

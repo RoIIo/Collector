@@ -14,9 +14,8 @@
             app:destination="@id/positionListFragmentDestination"
             app:popUpToInclusive="true">
             <argument
-                android:name="categoryId"
-                android:defaultValue="-1"
-                app:argType="integer" />
+                android:name="category"
+                app:argType="eu.mobile.application.collector.entity.Category" />
         </action>
 
         <action
@@ -31,9 +30,8 @@
         android:label="@string/positionListTitle"
         tools:layout="@layout/fragment_position_list">
         <argument
-            android:name="categoryId"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            android:name="category"
+            app:argType="eu.mobile.application.collector.entity.Category" />
         <action
             android:id="@+id/action_positionListFragment_to_positionDetailsFragment"
             app:destination="@id/positionDetailsFragmentDestination"
@@ -46,7 +44,11 @@
         <action
             android:id="@+id/action_positionListFragment_to_positionEntryFragment"
             app:destination="@id/positionEntryFragmentDestination"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true">
+            <argument
+                android:name="category"
+                app:argType="eu.mobile.application.collector.entity.Category" />
+        </action>
     </fragment>
 
     <fragment
@@ -65,9 +67,8 @@
         android:label="@string/positionEntryTitle"
         tools:layout="@layout/fragment_position_entry">
         <argument
-            android:name="categoryId"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            android:name="category"
+            app:argType="eu.mobile.application.collector.entity.Category" />
     </fragment>
     <fragment
         android:id="@+id/categoryEntryFragmentDestination"

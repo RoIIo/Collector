@@ -1,7 +1,7 @@
 package eu.mobile.application.collector.repository
 
 import eu.mobile.application.collector.entity.Category
-import eu.mobile.application.collector.event.ErrorHandler
+import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.kolekcjoner.DBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,7 +20,7 @@ class CategoryRepository @Inject constructor(val db: DBHelper) {
             }
             catch (ex: Exception) {
                 logger.warning("Wystąpił błąd podczas pobierania kategorii. $ex")
-                ErrorHandler.postErrorMessageEvent(ex)
+                EventBusHandler.postErrorMessage(ex)
                 Result.failure(ex)
             }
         }
@@ -34,7 +34,7 @@ class CategoryRepository @Inject constructor(val db: DBHelper) {
             }
             catch (ex: java.lang.Exception){
                 logger.warning("Wystąpił błąd podczas dodawania kategorii: $category. $ex")
-                ErrorHandler.postErrorMessageEvent(ex)
+                EventBusHandler.postErrorMessage(ex)
                 Result.failure(ex)
             }
         }
@@ -48,7 +48,7 @@ class CategoryRepository @Inject constructor(val db: DBHelper) {
             }
             catch (ex: java.lang.Exception){
                 logger.warning("Wystąpił błąd podczas usuwania kategorii Id: $id. $ex")
-                ErrorHandler.postErrorMessageEvent(ex)
+                EventBusHandler.postErrorMessage(ex)
                 Result.failure(ex)
             }
         }

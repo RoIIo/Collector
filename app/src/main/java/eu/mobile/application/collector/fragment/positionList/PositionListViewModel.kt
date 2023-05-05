@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.mobile.application.collector.entity.Position
-import eu.mobile.application.collector.event.ErrorHandler
+import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.repository.PositionRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,7 +38,7 @@ class PositionListViewModel @Inject constructor(
                     positionListNotifier.value = ArrayList(it)
                 }
                 .onFailure {
-                    ErrorHandler.postErrorMessageEvent(it)
+                    EventBusHandler.postErrorMessage(it)
                 }
             isLoaded.value = true
         }

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.entity.Position
-import eu.mobile.application.collector.event.ErrorHandler
+import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -89,7 +89,7 @@ class DBHelper @Inject constructor(
         return result
     }
     fun getPositions(categoryId: Int) : List<Position> {
-        ErrorHandler.postMessageEvent(Message().apply { message = "Not implemented categoryId = $categoryId" })
+        EventBusHandler.postMessage(Message().apply { message = "Not implemented categoryId = $categoryId" })
         return listOf()
     }
 }

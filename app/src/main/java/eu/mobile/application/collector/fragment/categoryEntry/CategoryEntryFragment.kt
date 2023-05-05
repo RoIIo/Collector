@@ -25,7 +25,6 @@ class CategoryEntryFragment : Fragment()  {
 
     private lateinit var viewBinding: FragmentCategoryEntryBinding
     private val viewModel by viewModels<CategoryEntryViewModel>()
-    private lateinit var arrayAdapter: ArrayAdapter<*>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

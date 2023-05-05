@@ -14,8 +14,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentCategoryListBinding
 import eu.mobile.application.collector.entity.Category
-import eu.mobile.application.collector.event.ErrorHandler
+import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
+import eu.mobile.application.collector.event.SubtitleMessage
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -48,32 +49,32 @@ class CategoryListFragment : Fragment() {
         viewModel.initialize()
         setupList()
         setupObservers()
+        EventBusHandler.postSubtitle(SubtitleMessage().apply { name = "" })
     }
 
     private fun setupList() {
         val arrayAdapter: ArrayAdapter<*>
+        if(viewModel.categoryArray.value == null) viewModel.categoryArray.value = arrayListOf()
+
         arrayAdapter = ArrayAdapter(
             requireContext(),
             R.layout.row_category,
-            viewModel.categoryArray.value?.map { it.name } ?: arrayListOf()
+            viewModel.categoryArray.value!!.map { it.name }
         )
-        val customAdapter = arrayAdapter
         logger.log(Level.INFO, "Size ${viewModel.categoryArray.value?.size}")
         val list = viewBinding.listCategory
-        this.arrayAdapter = customAdapter
-        list.adapter = this.arrayAdapter
+        list.adapter = arrayAdapter
+        this.arrayAdapter = arrayAdapter
     }
 
     private fun setupObservers(){
 
         viewBinding.listCategory.setOnItemClickListener{ _: AdapterView<*>, _: View, position: Int, id: Long ->
-            logger.log(Level.INFO, "Go to category details: ${id}")
-            logger.log(Level.INFO, "Go to category details Time: $id")
             val category = viewModel.categoryArray.value?.get(position)
             if(category!= null)
                 goToPositionList(category)
             else
-                ErrorHandler.postMessageEvent(Message().apply { message = "Wystąpił błąd podczas klikniecia kategorii" })
+                EventBusHandler.postMessage(Message().apply { message = "Wystąpił błąd podczas klikniecia kategorii" })
 
         }
         viewBinding.listCategory.setOnItemLongClickListener(){ _: AdapterView<*>, _: View, position: Int, id: Long->
@@ -94,16 +95,14 @@ class CategoryListFragment : Fragment() {
 
         viewModel.categoryArray.observe(viewLifecycleOwner){
             logger.log(Level.INFO, "Category list changed size: ${viewModel.categoryArray.value?.size}")
-            var arrayAdapter1 = ArrayAdapter(
+            arrayAdapter = ArrayAdapter(
                 requireContext(),
                 R.layout.row_category,
-                viewModel.categoryArray.value?.map { it.name } ?: arrayListOf()
+                viewModel.categoryArray.value!!.map { it.name }
             )
             val list = viewBinding.listCategory
-            list.adapter = arrayAdapter1
-            list.invalidate()
-            list.refreshDrawableState()
-
+            list.adapter = arrayAdapter
+            arrayAdapter.notifyDataSetChanged()
         }
         viewModel.categoryEntryPressed.observe(viewLifecycleOwner) {
             logger.log(Level.INFO, "Add category pressed")
@@ -131,10 +130,10 @@ class CategoryListFragment : Fragment() {
     }
     private fun goToPositionList(category: Category){
         if(category.Id == null){
-            ErrorHandler.postMessageEvent(Message().apply { message="There is no ID in category: ${category.name}" })
+            EventBusHandler.postMessage(Message().apply { message="There is no ID in category: ${category.name}" })
             return
         }
-        val action = CategoryListFragmentDirections.actionCategoryListFragmentToPositionListFragment(category.Id!!)
+        val action = CategoryListFragmentDirections.actionCategoryListFragmentToPositionListFragment(category)
         findNavController().navigate(action)
     }
 
