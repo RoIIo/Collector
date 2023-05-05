@@ -82,8 +82,8 @@ class CategoryListFragment : Fragment() {
             var selectedCategory = viewModel.categoryArray.value?.get(position)
 
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle(resources.getString(R.string.fragment_main_fragment_category_delete_title))
-                .setMessage(resources.getString(R.string.fragment_main_fragment_category_delete_message) +
+                .setTitle(resources.getString(R.string.fragment_category_list_delete_title))
+                .setMessage(resources.getString(R.string.fragment_category_list_delete_message) +
                         selectedCategory?.name)
                 .setPositiveButton(android.R.string.yes) { _, _ ->
                     viewModel.deleteCategory(position)

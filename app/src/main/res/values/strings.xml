@@ -1,12 +1,19 @@
 <resources>
     <string name="app_name">Aplikacja kolekcjonerska</string>
-    <string name="fragment_main_fragment_category_delete_title">Usuń</string>
-    <string name="fragment_main_fragment_category_delete_message">Czy napewno chcesz usunąć kategorię:\n</string>
+
+    <string name="fragment_category_list_delete_title">Usuń</string>
+    <string name="fragment_category_list_delete_message">Czy napewno chcesz usunąć kategorię:</string>
+
+    <string name="fragment_category_entry_add__button">Dodaj</string>
+    <string name="fragment_category_entry_category_name_entry">Wpisz kategorię</string>
+
+    <string name="fragment_position_list_delete_title">Usuń</string>
+    <string name="fragment_position_list_delete_message">"Czy napewno chcesz usunąć pozycję: "</string>
+
     <string name="categoryListTitle">Lista kategorii</string>
     <string name="positionListTitle">Lista pozycji</string>
     <string name="positionDetailsTitle">Szczegóły pozycji</string>
     <string name="positionEntryTitle">Nowa pozycja</string>
     <string name="categoryEntryTitle">Nowa kategoria</string>
-    <string name="fragment_category_entry_add__button">Dodaj</string>
-    <string name="fragment_category_entry_category_name_entry">Wpisz kategorię</string>
+
 </resources>

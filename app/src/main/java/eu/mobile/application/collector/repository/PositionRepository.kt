@@ -20,4 +20,17 @@ class PositionRepository  @Inject constructor(val db: DBHelper) {
             }
         }
     }
+    suspend fun deletePosition(positionId: Int): Result<Boolean>{
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = db.deletePosition(positionId)
+                Result.success(result)
+            }
+            catch (ex: java.lang.Exception){
+                CategoryRepository.logger.warning("Wystąpił błąd podczas usuwania Pozycji Id: $positionId. $ex")
+                EventBusHandler.postErrorMessage(ex)
+                Result.failure(ex)
+            }
+        }
+    }
 }
