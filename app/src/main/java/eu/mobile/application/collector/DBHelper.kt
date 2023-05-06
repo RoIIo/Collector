@@ -4,6 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import androidx.core.database.getBlobOrNull
+import androidx.core.database.getIntOrNull
+import androidx.core.database.getStringOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.entity.Position
@@ -20,7 +23,7 @@ class DBHelper @Inject constructor(
 
     companion object{
         private val DATABASE_NAME = "Collector.db"
-        private val DATABASE_VERSION = 4
+        private val DATABASE_VERSION = 5
 
         val CATEGORIES_TABLE = "categories"
         val CATEGORY_ID = "id"
@@ -30,6 +33,7 @@ class DBHelper @Inject constructor(
         val POSITION_ID = "id"
         val POSITION_NAME = "name"
         val POSITION_CATEGORY_ID = "category_id"
+        val POSITION_IMAGE = "image"
 
     }
     override fun onCreate(db: SQLiteDatabase) {
@@ -41,10 +45,11 @@ class DBHelper @Inject constructor(
             CATEGORY_NAME + " TEXT)"
 
     private val tablePositionsQuery = "CREATE TABLE IF NOT EXISTS " + POSITION_TABLE + " (" +
-            POSITION_ID + " INTEGER PRIMARY KEY," +
-            POSITION_NAME + " TEXT," +
-            POSITION_CATEGORY_ID + " INTEGER," +
-            " FOREIGN KEY($POSITION_CATEGORY_ID) REFERENCES $CATEGORIES_TABLE($CATEGORY_ID))"
+            POSITION_ID + " INTEGER PRIMARY KEY, " +
+            POSITION_NAME + " TEXT, " +
+            POSITION_CATEGORY_ID + " INTEGER, " +
+            POSITION_IMAGE + " BLOB, " +
+            "FOREIGN KEY($POSITION_CATEGORY_ID) REFERENCES $CATEGORIES_TABLE($CATEGORY_ID))"
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
         db.execSQL("DROP TABLE IF EXISTS $CATEGORIES_TABLE")
@@ -71,8 +76,8 @@ class DBHelper @Inject constructor(
         while(cursor?.moveToNext() == true)
         {
             var category: Category?
-            val id = cursor.getInt(0)
-            val name = cursor.getString(1)
+            val id = cursor.getIntOrNull(0)
+            val name = cursor.getStringOrNull(1)
             category = Category().apply {
                 this.Id = id
                 this.name = name}
@@ -106,13 +111,15 @@ class DBHelper @Inject constructor(
         while(cursor?.moveToNext() == true)
         {
             var position: Position?
-            val id = cursor.getInt(0)
-            val name = cursor.getString(1)
-            val category = cursor.getInt(2)
+            val id = cursor.getIntOrNull(0)
+            val name = cursor.getStringOrNull(1)
+            val category = cursor.getIntOrNull(2)
+            val image = cursor.getBlobOrNull(3)
             position = Position().apply {
                 this.Id = id
                 this.name = name
-                this.categoryId = category}
+                this.categoryId = category
+            this.image = image}
             positions.add(position)
         }
         db.close()
@@ -123,6 +130,7 @@ class DBHelper @Inject constructor(
         val values = ContentValues()
         values.put(POSITION_NAME, position.name)
         values.put(POSITION_CATEGORY_ID, position.categoryId)
+        values.put(POSITION_IMAGE, position.image)
 
         val db = this.writableDatabase
         val id = db.insert(POSITION_TABLE, null, values)

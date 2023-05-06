@@ -8,10 +8,13 @@ class Position() : Parcelable {
     var Id: Int? = null
     var name: String? = null
     var categoryId: Int? = null
+    var image: ByteArray? = null
 
     constructor(parcel: Parcel) : this() {
-        Id = parcel.readValue(Int::class.java.classLoader) as? Int
+        Id = parcel.readInt()
         name = parcel.readString()
+        categoryId = parcel.readInt()
+        image = parcel.createByteArray()
     }
 
     override fun describeContents(): Int {
@@ -20,7 +23,9 @@ class Position() : Parcelable {
 
     override fun writeToParcel(p0: Parcel, p1: Int) {
         Id?.let { p0.writeInt(Id!!) }
-        name?.let { p0.writeString(name) }
+        name?.let { p0.writeString(name!!) }
+        categoryId?.let { p0.writeInt(categoryId!!) }
+        image?.let { p0.writeByteArray(image!!) }
     }
 
     companion object CREATOR : Parcelable.Creator<Position> {
