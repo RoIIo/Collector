@@ -7,15 +7,22 @@
     <string name="fragment_category_entry_add__button">Dodaj</string>
     <string name="fragment_category_entry_category_name_entry">Wpisz kategorię</string>
 
+    <string name="fragment_initialization_permission_required">Wymagane uprawnienia</string>
+    <string name="fragment_initialization_permission_message">Kilka uprawnień jest wymagana aby móc korzystać z aplikacji.</string>
+    <string name="fragment_initialization_permission_ok">OK</string>
+    <string name="fragment_initialization_permission_cancel">Anuluj</string>
+
+    <string name="fragment_position_entry_add_button">Dodaj</string>
+    <string name="fragment_position_entry_position_name_entry">Wpisz nazwę</string>
+
     <string name="fragment_position_list_delete_title">Usuń</string>
     <string name="fragment_position_list_delete_message">"Czy napewno chcesz usunąć pozycję: "</string>
 
-    <string name="categoryListTitle">Lista kategorii</string>
-    <string name="positionListTitle">Lista pozycji</string>
-    <string name="positionDetailsTitle">Szczegóły pozycji</string>
-    <string name="positionEntryTitle">Nowa pozycja</string>
-    <string name="categoryEntryTitle">Nowa kategoria</string>
-    <string name="fragment_position_entry_add_button">Dodaj</string>
-    <string name="fragment_position_entry_position_name_entry">Wpisz nazwę</string>
+    <string name="nav_graph_position_list_title">Lista pozycji</string>
+    <string name="nav_graph_position_details_title">Szczegóły pozycji</string>
+    <string name="nav_graph_position_entry_title">Nowa pozycja</string>
+    <string name="nav_graph_category_entry_title">Nowa kategoria</string>
+    <string name="nav_graph_permission_title">Uprawnienia</string>
+    <string name="nav_graph_category_list_title">Lista kategorii</string>
 
 </resources>

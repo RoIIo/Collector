@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,7 +42,6 @@ class CategoryListFragment : Fragment() {
             viewModel = this@CategoryListFragment.viewModel
         }
         viewBinding.lifecycleOwner = this.viewLifecycleOwner
-
         return viewBinding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

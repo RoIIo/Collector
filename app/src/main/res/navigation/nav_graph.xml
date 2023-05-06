@@ -3,12 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/categoryListFragmentDestination">
+    app:startDestination="@id/initializationFragmentDestination">
+
+    <fragment
+        android:id="@+id/initializationFragmentDestination"
+        android:name="eu.mobile.application.collector.fragment.initialization.InitializationFragment"
+        android:label="@string/nav_graph_permission_title"
+        tools:layout="@layout/fragment_initialization"
+        app:popUpToInclusive="true">
+        <action
+            android:id="@+id/action_initializationFragment_to_categoryListFragment"
+            app:destination="@id/categoryListFragmentDestination"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/categoryListFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.categoryList.CategoryListFragment"
-        android:label="@string/categoryListTitle"
-        tools:layout="@layout/fragment_category_list">
+        android:label="@string/nav_graph_category_list_title"
+        tools:layout="@layout/fragment_category_list"
+        app:popUpToInclusive="true">
         <action
             android:id="@+id/action_categoryListFragment_to_positionListFragment"
             app:destination="@id/positionListFragmentDestination"
@@ -27,7 +41,7 @@
     <fragment
         android:id="@+id/positionListFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.positionList.PositionListFragment"
-        android:label="@string/positionListTitle"
+        android:label="@string/nav_graph_position_list_title"
         tools:layout="@layout/fragment_position_list">
         <argument
             android:name="category"
@@ -54,7 +68,7 @@
     <fragment
         android:id="@+id/positionDetailsFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.positionDetails.PositionDetailsFragment"
-        android:label="@string/positionDetailsTitle"
+        android:label="@string/nav_graph_position_details_title"
         tools:layout="@layout/fragment_position_details">
         <argument
             android:name="position"
@@ -64,7 +78,7 @@
     <fragment
         android:id="@+id/positionEntryFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.positionEntry.PositionEntryFragment"
-        android:label="@string/positionEntryTitle"
+        android:label="@string/nav_graph_position_entry_title"
         tools:layout="@layout/fragment_position_entry">
         <argument
             android:name="category"
@@ -73,6 +87,6 @@
     <fragment
         android:id="@+id/categoryEntryFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.categoryEntry.CategoryEntryFragment"
-        android:label="@string/categoryEntryTitle"
-        tools:layout="@layout/fragment_category_entry"></fragment>
+        android:label="@string/nav_graph_category_entry_title"
+        tools:layout="@layout/fragment_category_entry" />
 </navigation>
