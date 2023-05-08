@@ -112,7 +112,7 @@ class PositionListFragment : Fragment()  {
             if(it)
                 goToPositionEntry()
         }
-        viewModel.isLoaded.observe(viewLifecycleOwner) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             logger.log(Level.INFO, "IsLoaded: $it")
             if (it)
                 showLoading()

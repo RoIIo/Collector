@@ -39,11 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
-        val destination = if(hasPermissions(this, InitializationFragment.PERMISSIONS))
-                R.id.categoryListFragmentDestination
-            else
-                R.id.initializationFragmentDestination
-        val appBarConfiguration = AppBarConfiguration.Builder(destination).build()
+        val appBarConfiguration = AppBarConfiguration.Builder(R.id.initializationFragmentDestination, R.id.categoryListFragmentDestination ).build()
         setupActionBarWithNavController(navHostFragment.navController, appBarConfiguration)
     }
 

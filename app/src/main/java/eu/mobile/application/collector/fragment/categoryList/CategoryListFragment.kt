@@ -109,7 +109,7 @@ class CategoryListFragment : Fragment() {
             if(it)
                 goToCategoryEntry()
         }
-        viewModel.isLoaded.observe(viewLifecycleOwner) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             logger.log(Level.INFO, "IsLoaded: $it")
             if (it)
                 showLoading()

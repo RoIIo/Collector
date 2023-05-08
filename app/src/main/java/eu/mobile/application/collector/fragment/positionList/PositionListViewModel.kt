@@ -24,7 +24,8 @@ class PositionListViewModel @Inject constructor(
         var logger =  Logger.getLogger(PositionListViewModel::class.simpleName)
     }
 
-    var isLoaded = MutableLiveData(false)
+    var isLoadingNotifier = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = isLoadingNotifier
     var category: Category? = null
     private val positionPressedNotifier = MutableLiveData<Boolean>()
     val positionPressed: LiveData<Boolean> = positionPressedNotifier
@@ -33,16 +34,16 @@ class PositionListViewModel @Inject constructor(
     fun addPositionPressed(){
         positionPressedNotifier.value = true
     }
-    fun deletePosition(position: Int){
+    fun deletePosition(arrayPosition: Int){
         viewModelScope.launch {
-            isLoaded.value = false
+            isLoadingNotifier.value = true
 
-            val id = positionArrayNotifier.value?.get(position)?.Id ?: return@launch
-            positionRepository.deletePosition(id)
+            val position = positionArrayNotifier.value?.get(arrayPosition) ?: return@launch
+            positionRepository.deletePosition(position)
                 .onSuccess {
                     logger.info("Pomyślnie usunięto pozycję")
                     EventBusHandler.postMessage(Message().apply { message = "Pomyślnie usunięto pozycję" })
-                    positionArrayNotifier.value?.removeAt(position)
+                    positionArrayNotifier.value?.removeAt(arrayPosition)
                     val newList = MutableLiveData(arrayListOf<Position>())
                     newList.value?.addAll(positionArrayNotifier.value!!)
                     positionArrayNotifier.value = newList.value
@@ -51,7 +52,7 @@ class PositionListViewModel @Inject constructor(
                     EventBusHandler.postErrorMessage(it)
                     logger.warning("Nie udało się usunąć kategorii: $it")
                 }
-            isLoaded.value = true
+            isLoadingNotifier.value = false
         }
     }
     fun initialize(category: Category){
@@ -62,7 +63,7 @@ class PositionListViewModel @Inject constructor(
 
     private fun loadPositions(categoryId: Int) {
         viewModelScope.launch {
-            isLoaded.value = false
+            isLoadingNotifier.value = true
             positionRepository.getPositions(categoryId)
                 .onSuccess {
                     positionArrayNotifier.value = ArrayList(it)
@@ -70,7 +71,7 @@ class PositionListViewModel @Inject constructor(
                 .onFailure {
                     EventBusHandler.postErrorMessage(it)
                 }
-            isLoaded.value = true
+            isLoadingNotifier.value = false
         }
 
     }

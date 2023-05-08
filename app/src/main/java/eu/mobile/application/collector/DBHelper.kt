@@ -10,8 +10,6 @@ import androidx.core.database.getStringOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.entity.Position
-import eu.mobile.application.collector.event.EventBusHandler
-import eu.mobile.application.collector.event.Message
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -102,10 +100,11 @@ class DBHelper @Inject constructor(
         return result
     }
     fun getPositions(categoryId: Int) : List<Position> {
-        val query = "SELECT * FROM $POSITION_TABLE where $POSITION_CATEGORY_ID = $categoryId"
+        val query = "SELECT * FROM $POSITION_TABLE WHERE $POSITION_CATEGORY_ID=?;"
+        var args: Array<String> = arrayOf("$categoryId")
         val db = this.readableDatabase
 
-        val cursor = db.rawQuery(query, null)
+        val cursor = db.rawQuery(query, args)
 
         var positions = ArrayList<Position>()
         while(cursor?.moveToNext() == true)
@@ -114,12 +113,12 @@ class DBHelper @Inject constructor(
             val id = cursor.getIntOrNull(0)
             val name = cursor.getStringOrNull(1)
             val category = cursor.getIntOrNull(2)
-            val image = cursor.getBlobOrNull(3)
+            val image = cursor.getStringOrNull(3)
             position = Position().apply {
                 this.Id = id
                 this.name = name
                 this.categoryId = category
-            this.image = image}
+                this.imagePath = image}
             positions.add(position)
         }
         db.close()
@@ -130,7 +129,7 @@ class DBHelper @Inject constructor(
         val values = ContentValues()
         values.put(POSITION_NAME, position.name)
         values.put(POSITION_CATEGORY_ID, position.categoryId)
-        values.put(POSITION_IMAGE, position.image)
+        values.put(POSITION_IMAGE, position.imagePath)
 
         val db = this.writableDatabase
         val id = db.insert(POSITION_TABLE, null, values)
@@ -140,9 +139,9 @@ class DBHelper @Inject constructor(
     }
     fun deletePosition(id: Int) : Boolean{
         var result = false
-        val query = "SELECT * from $POSITION_TABLE WHERE $POSITION_ID = $id"
+        val query = "SELECT * from $POSITION_TABLE WHERE $POSITION_ID = ?"
         val db = this.writableDatabase
-        val cursor = db.rawQuery(query, null)
+        val cursor = db.rawQuery(query, arrayOf(id.toString()))
         if(cursor.moveToFirst())
         {
             val id_obj = cursor.getInt(0)

@@ -37,7 +37,8 @@ class InitializationFragment: Fragment() {
         val logger = Logger.getLogger(InitializationFragment::class.simpleName)
         val PERMISSIONS = arrayOf(
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.CAMERA
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
     }
     private lateinit var layout: View

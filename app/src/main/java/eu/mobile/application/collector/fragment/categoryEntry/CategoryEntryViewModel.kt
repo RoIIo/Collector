@@ -20,6 +20,8 @@ class CategoryEntryViewModel @Inject constructor(
     private val addedCategoryNotifier: MutableLiveData<Boolean> = MutableLiveData()
     val addedCategoryLiveData: LiveData<Boolean> = addedCategoryNotifier
 
+    var isLoadingNotifier = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = isLoadingNotifier
     fun addCategory(){
         if(categoryEntryNotifier.value.isNullOrEmpty()){
             EventBusHandler.postMessage(Message().apply { message = "Musisz wpisać nazwę kategorii" })

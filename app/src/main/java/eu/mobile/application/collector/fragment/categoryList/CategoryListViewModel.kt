@@ -23,14 +23,15 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
     var categoryEntryPressedNotifier = MutableLiveData<Boolean>()
     val categoryEntryPressed: LiveData<Boolean> = categoryEntryPressedNotifier
 
-    var isLoaded = MutableLiveData(false)
+    var isLoadingNotifier = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = isLoadingNotifier
     val categoryArray: MutableLiveData<ArrayList<Category>> = MutableLiveData(arrayListOf())
     fun addCategoryPressed(){
         categoryEntryPressedNotifier.value = true
     }
     fun deleteCategory(position: Int){
         viewModelScope.launch {
-            isLoaded.value = false
+            isLoadingNotifier.value = true
 
             val id = categoryArray.value?.get(position)?.Id ?: return@launch
             categoryRepository.deleteCategory(id)
@@ -46,7 +47,7 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
                     EventBusHandler.postErrorMessage(it)
                     logger.warning("Nie udało się usunąć kategorii: $it")
                 }
-                    isLoaded.value = true
+            isLoadingNotifier.value = false
         }
     }
 
@@ -57,7 +58,7 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
 
     private fun loadCategories(){
         viewModelScope.launch {
-            isLoaded.value = false
+            isLoadingNotifier.value = true
             categoryRepository.getCategories().onSuccess {
                 logger.log(Level.INFO,"get categories: $it. Size: ${it.size}")
                 categoryArray.value = ArrayList(it)
@@ -65,7 +66,7 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
                 .onFailure {
                     logger.log(Level.WARNING, "Failed to get categories: $it")
                 }
-            isLoaded.value = true
+            isLoadingNotifier.value = false
         }
     }
 }
