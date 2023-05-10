@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import androidx.core.database.getBlobOrNull
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getStringOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -32,6 +31,9 @@ class DBHelper @Inject constructor(
         val POSITION_NAME = "name"
         val POSITION_CATEGORY_ID = "category_id"
         val POSITION_IMAGE = "image"
+        val POSITION_DESCRIPTION = "description"
+        val POSITION_RATING = "rating"
+        val POSITION_TOTAL = "total"
 
     }
     override fun onCreate(db: SQLiteDatabase) {
@@ -46,7 +48,10 @@ class DBHelper @Inject constructor(
             POSITION_ID + " INTEGER PRIMARY KEY, " +
             POSITION_NAME + " TEXT, " +
             POSITION_CATEGORY_ID + " INTEGER, " +
-            POSITION_IMAGE + " BLOB, " +
+            POSITION_IMAGE + " TEXT, " +
+            POSITION_DESCRIPTION + " TEXT, " +
+            POSITION_RATING + " INTEGER, " +
+            POSITION_TOTAL + " INTEGER, " +
             "FOREIGN KEY($POSITION_CATEGORY_ID) REFERENCES $CATEGORIES_TABLE($CATEGORY_ID))"
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
@@ -114,11 +119,17 @@ class DBHelper @Inject constructor(
             val name = cursor.getStringOrNull(1)
             val category = cursor.getIntOrNull(2)
             val image = cursor.getStringOrNull(3)
+            val description = cursor.getStringOrNull(4)
+            val rating = cursor.getInt(5)
+            val total = cursor.getIntOrNull(6)
             position = Position().apply {
                 this.Id = id
                 this.name = name
                 this.categoryId = category
-                this.imagePath = image}
+                this.imagePath = image
+                this.description = description
+                this.rating = rating
+                this.total = total}
             positions.add(position)
         }
         db.close()
@@ -130,6 +141,9 @@ class DBHelper @Inject constructor(
         values.put(POSITION_NAME, position.name)
         values.put(POSITION_CATEGORY_ID, position.categoryId)
         values.put(POSITION_IMAGE, position.imagePath)
+        values.put(POSITION_DESCRIPTION, position.description)
+        values.put(POSITION_RATING, position.rating)
+        values.put(POSITION_TOTAL, position.total)
 
         val db = this.writableDatabase
         val id = db.insert(POSITION_TABLE, null, values)

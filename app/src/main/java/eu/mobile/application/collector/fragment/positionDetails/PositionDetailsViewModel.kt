@@ -17,6 +17,9 @@ val positionNameNotifier: MutableLiveData<String> = MutableLiveData()
         loadImage(position)
     }
 
+    fun modifyPositionPressed(){
+
+    }
     private fun loadImage(position: Position) {
         val bitmap = BitmapFactory.decodeFile(position.imagePath)
         position.imageBitMap = bitmap

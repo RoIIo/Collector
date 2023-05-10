@@ -8,9 +8,11 @@ class Position() : Parcelable {
     var Id: Int? = null
     var name: String? = null
     var categoryId: Int? = null
-    var imageBitMap: Bitmap? = null
-
     var imagePath: String? = null
+    var description: String? = null
+    var rating: Int? = null
+    var total: Int? = null
+    var imageBitMap: Bitmap? = null
 
 
     constructor(parcel: Parcel) : this() {

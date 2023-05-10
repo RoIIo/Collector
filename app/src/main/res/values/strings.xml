@@ -24,5 +24,6 @@
     <string name="nav_graph_category_entry_title">Nowa kategoria</string>
     <string name="nav_graph_permission_title">Uprawnienia</string>
     <string name="nav_graph_category_list_title">Lista kategorii</string>
+    <string name="nav_graph_position_modify_title">Edycja pozycji</string>
 
 </resources>
