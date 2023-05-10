@@ -151,6 +151,21 @@ class DBHelper @Inject constructor(
         position.Id = id.toInt()
         return position
     }
+
+    fun modifyPosition(position: Position): Position{
+        val values = ContentValues()
+        values.put(POSITION_NAME, position.name)
+        values.put(POSITION_CATEGORY_ID, position.categoryId)
+        values.put(POSITION_IMAGE, position.imagePath)
+        values.put(POSITION_DESCRIPTION, position.description)
+        values.put(POSITION_RATING, position.rating)
+        values.put(POSITION_TOTAL, position.total)
+
+        val db = this.writableDatabase
+        db.update(POSITION_TABLE, values,"$POSITION_ID = ?", arrayOf(position.Id.toString()))
+        db.close()
+        return position
+    }
     fun deletePosition(id: Int) : Boolean{
         var result = false
         val query = "SELECT * from $POSITION_TABLE WHERE $POSITION_ID = ?"

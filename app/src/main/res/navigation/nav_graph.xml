@@ -68,8 +68,8 @@
     <fragment
         android:id="@+id/positionDetailsFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.positionDetails.PositionDetailsFragment"
-        android:label="@string/nav_graph_position_modify_title"
-        tools:layout="@layout/fragment_position_modify">
+        android:label="@string/nav_graph_position_details_title"
+        tools:layout="@layout/fragment_position_details">
         <argument
             android:name="position"
             app:argType="eu.mobile.application.collector.entity.Position" />
@@ -86,11 +86,20 @@
     <fragment
         android:id="@+id/positionModifyFragmentDestination"
         android:name="eu.mobile.application.collector.fragment.positionModify.PositionModifyFragment"
-        android:label="@string/nav_graph_position_details_title"
-        tools:layout="@layout/fragment_position_details">
+        android:label="@string/nav_graph_position_modify_title"
+        tools:layout="@layout/fragment_position_modify">
         <argument
             android:name="position"
             app:argType="eu.mobile.application.collector.entity.Position" />
+        <action
+            android:id="@+id/action_positionModifyFragment_to_positionDetailsFragment"
+            app:destination="@id/positionDetailsFragmentDestination"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="position"
+                app:argType="eu.mobile.application.collector.entity.Position"
+                app:popUpToInclusive="true"/>
+        </action>
     </fragment>
 
     <fragment

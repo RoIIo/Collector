@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
@@ -44,8 +45,21 @@ class PositionDetailsFragment : Fragment()  {
 
         val position = args.position
         viewModel.initialize(position)
-        if(position.imageBitMap != null)
-            viewBinding.imgViewerDetails.setImageBitmap(position.imageBitMap)
+        setupObservers()
         EventBusHandler.postSubtitle(SubtitleMessage().apply { name = position.name })
+    }
+    private fun setupObservers(){
+
+        viewModel.positionImageNotifier.observe(viewLifecycleOwner){
+            viewBinding.fragmentPositionDetailsImage.setImageBitmap(it)
+        }
+        viewModel.modifyPositionLiveData.observe(viewLifecycleOwner){
+            goToPositionModify()
+        }
+    }
+
+    private fun goToPositionModify() {
+        val action = PositionDetailsFragmentDirections.actionPositionDetailsFragmentToPositionModifyFragment(args.position)
+        findNavController().navigate(action)
     }
 }

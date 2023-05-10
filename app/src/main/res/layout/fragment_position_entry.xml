@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <EditText
-            android:id="@+id/positionEntry"
+            android:id="@+id/fragment_position_entry_name"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_margin="10dp"
@@ -25,30 +25,38 @@
 
 
         <ImageView
-            android:id="@+id/img_viewer"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:id="@+id/fragment_position_entry_image"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:scaleType="fitCenter"
             android:src="@mipmap/ic_camera"
-            android:onClick="@{()->viewModel.cameraButtonClicked()}"
-            app:layout_constraintTop_toBottomOf="@id/positionEntry"
+            android:onClick="@{()->viewModel.imageClicked()}"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_entry_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:id="@+id/fragment_position_entry_rating_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32dp"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_entry_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Ocena"/>
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/fragment_position_entry_rating_bar"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:numStars="5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_viewer" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_position_entry_rating_text" />
 
         <EditText
-            android:id="@+id/descriptionEntry"
+            android:id="@+id/fragment_position_entry_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="false"
@@ -61,18 +69,32 @@
             android:enabled="@{!viewModel.isLoading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
-
-        <Button
-            android:id="@+id/positionButtonEntry"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_position_entry_rating_bar" />
+        <EditText
+            android:id="@+id/fragment_position_entry_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.addPosition()}"
+            android:singleLine="false"
+            android:layout_marginHorizontal="20dp"
+            android:hint="@string/fragment_position_entry_total"
+            android:inputType="number"
+            android:maxLength ="2000"
+            android:scrollHorizontally="false"
+            android:text="@={viewModel.positionTotalNotifier}"
             android:enabled="@{!viewModel.isLoading}"
-            android:text="@string/fragment_position_entry_add_button"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionEntry"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_position_entry_description" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:layout_margin="20dp"
+            android:enabled="@{!viewModel.isLoading}"
+            android:onClick="@{() -> viewModel.addPosition()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_save" />
 
         <ProgressBar
             style="?android:attr/progressBarStyle"

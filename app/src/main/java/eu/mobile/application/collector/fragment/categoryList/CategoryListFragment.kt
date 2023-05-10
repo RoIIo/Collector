@@ -62,14 +62,14 @@ class CategoryListFragment : Fragment() {
             viewModel.categoryArray.value!!.map { it.name }
         )
         logger.log(Level.INFO, "Size ${viewModel.categoryArray.value?.size}")
-        val list = viewBinding.listCategory
+        val list = viewBinding.fragmentCategoryListListCategory
         list.adapter = arrayAdapter
         this.arrayAdapter = arrayAdapter
     }
 
     private fun setupObservers(){
 
-        viewBinding.listCategory.setOnItemClickListener{ _: AdapterView<*>, _: View, position: Int, id: Long ->
+        viewBinding.fragmentCategoryListListCategory.setOnItemClickListener{ _: AdapterView<*>, _: View, position: Int, id: Long ->
             val category = viewModel.categoryArray.value?.get(position)
             if(category!= null)
                 goToPositionList(category)
@@ -77,7 +77,7 @@ class CategoryListFragment : Fragment() {
                 EventBusHandler.postMessage(Message().apply { message = "Wystąpił błąd podczas klikniecia kategorii" })
 
         }
-        viewBinding.listCategory.setOnItemLongClickListener(){ _: AdapterView<*>, _: View, position: Int, id: Long->
+        viewBinding.fragmentCategoryListListCategory.setOnItemLongClickListener(){ _: AdapterView<*>, _: View, position: Int, id: Long->
             logger.log(Level.INFO, "Delete category:  $position")
             var selectedCategory = viewModel.categoryArray.value?.get(position)
 
@@ -100,7 +100,7 @@ class CategoryListFragment : Fragment() {
                 R.layout.row_category,
                 viewModel.categoryArray.value!!.map { it.name }
             )
-            val list = viewBinding.listCategory
+            val list = viewBinding.fragmentCategoryListListCategory
             list.adapter = arrayAdapter
             arrayAdapter.notifyDataSetChanged()
         }
@@ -109,20 +109,6 @@ class CategoryListFragment : Fragment() {
             if(it)
                 goToCategoryEntry()
         }
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            logger.log(Level.INFO, "IsLoaded: $it")
-            if (it)
-                showLoading()
-            else
-                hideLoading()
-        }
-    }
-
-    private fun hideLoading() {
-
-    }
-
-    private fun showLoading() {
     }
 
     private fun goToCategoryEntry(){

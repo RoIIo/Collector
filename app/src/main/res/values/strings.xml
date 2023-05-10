@@ -25,5 +25,10 @@
     <string name="nav_graph_permission_title">Uprawnienia</string>
     <string name="nav_graph_category_list_title">Lista kategorii</string>
     <string name="nav_graph_position_modify_title">Edycja pozycji</string>
+    <string name="fragment_category_list">Kategorie</string>
+    <string name="fragment_initialization_permission_button">Nadaj uprawnienia</string>
+    <string name="fragment_position_modify_position_name_entry">Wpisz nazwę</string>
+    <string name="fragment_position_modify_description">Opis pozycji</string>
+    <string name="fragment_position_entry_total">Ilość</string>
 
 </resources>

@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <ListView
-            android:id="@+id/list_position"
+            android:id="@+id/fragment_position_list_list_position"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="@{!viewModel.isLoading}"
@@ -21,7 +21,6 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addPosition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"

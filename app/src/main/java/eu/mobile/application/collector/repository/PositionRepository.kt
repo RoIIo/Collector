@@ -49,17 +49,6 @@ class PositionRepository  @Inject constructor(val db: DBHelper) {
         }
     }
 
-    private fun saveImage(imageBitMap: Bitmap?,filePath: String?) {
-        if(imageBitMap!= null && !filePath.isNullOrEmpty()){
-            val file = File(filePath)
-            val fOut = FileOutputStream(file)
-
-            imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
-            fOut.flush()
-            fOut.close()
-        }
-    }
-
     suspend fun deletePosition(position: Position): Result<Boolean>{
         return withContext(Dispatchers.IO) {
             try {
@@ -75,8 +64,34 @@ class PositionRepository  @Inject constructor(val db: DBHelper) {
         }
     }
 
+    suspend fun modifyPosition(position: Position): Result<Position>{
+        return withContext(Dispatchers.IO) {
+            try {
+                val result  = db.modifyPosition(position)
+                saveImage(position.imageBitMap, position.imagePath)
+                logger.info("SUCESSFULLY MODIFIED POSITION")
+                Result.success(result)
+            }
+            catch (ex: Exception) {
+                logger.warning("FAILED TO MODIFY POSITION $ex")
+                EventBusHandler.postErrorMessage(ex)
+                Result.failure(ex)
+            }
+        }
+    }
+
     private fun deleteImage(imagePath: String?) {
         val file = File(imagePath)
         file.delete()
+    }
+    private fun saveImage(imageBitMap: Bitmap?,filePath: String?) {
+        if(imageBitMap!= null && !filePath.isNullOrEmpty()){
+            val file = File(filePath)
+            val fOut = FileOutputStream(file)
+
+            imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
+            fOut.flush()
+            fOut.close()
+        }
     }
 }

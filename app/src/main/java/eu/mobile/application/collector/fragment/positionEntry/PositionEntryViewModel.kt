@@ -27,18 +27,19 @@ class PositionEntryViewModel @Inject constructor(
 
     var positionNameNotifier: MutableLiveData<String> = MutableLiveData()
     var positionDescriptionNotifier: MutableLiveData<String> = MutableLiveData()
-    var positionTotalNotifier: MutableLiveData<Int> = MutableLiveData()
+    var positionTotalNotifier: MutableLiveData<String> = MutableLiveData()
     var positionRatingNotifier: MutableLiveData<Int> = MutableLiveData()
     var positionImgNotifier: MutableLiveData<Bitmap> = MutableLiveData()
-    var positionImgPathNotifier: MutableLiveData<String> =MutableLiveData()
+    var positionImgPathNotifier: MutableLiveData<String> = MutableLiveData()
+
     private val addedPositionNotifier: MutableLiveData<Boolean> = MutableLiveData()
     val addedPositionLiveData: LiveData<Boolean> = addedPositionNotifier
-    val cameraButtonNotifier: MutableLiveData<Boolean> = MutableLiveData()
-    val cameraButtonLiveData: LiveData<Boolean> = cameraButtonNotifier
+    val cameraClickedNotifier: MutableLiveData<Boolean> = MutableLiveData()
+    val cameraClickedLiveData: LiveData<Boolean> = cameraClickedNotifier
     var category: Category? = null
 
-    fun cameraButtonClicked(){
-        cameraButtonNotifier.value = true
+    fun imageClicked(){
+        cameraClickedNotifier.value = true
     }
 
 
@@ -55,7 +56,7 @@ class PositionEntryViewModel @Inject constructor(
                 imageBitMap = positionImgNotifier.value
                 imagePath = positionImgPathNotifier.value
                 description = positionDescriptionNotifier.value
-                total = positionTotalNotifier.value
+                total = positionTotalNotifier.value?.toIntOrNull()
                 rating = positionRatingNotifier.value
             })
                 .onSuccess {

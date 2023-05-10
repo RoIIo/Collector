@@ -65,13 +65,13 @@ class PositionListFragment : Fragment()  {
             arrayListOf()
         )
         logger.log(Level.INFO, "Size ${viewModel.positionArrayNotifier.value?.size}")
-        val list = viewBinding.listPosition
+        val list = viewBinding.fragmentPositionListListPosition
         list.adapter = arrayAdapter
         this.arrayAdapter = arrayAdapter
     }
 
     private fun setupObservers(){
-        viewBinding.listPosition.setOnItemClickListener{ _: AdapterView<*>, _: View, position: Int, id: Long ->
+        viewBinding.fragmentPositionListListPosition.setOnItemClickListener{ _: AdapterView<*>, _: View, position: Int, id: Long ->
             val position = viewModel.positionArrayNotifier.value?.get(position)
             if(position!= null)
                 goToPositionDetails(position)
@@ -79,7 +79,7 @@ class PositionListFragment : Fragment()  {
                 EventBusHandler.postMessage(Message().apply { message = "Wystąpił błąd podczas klikniecia kategorii" })
 
         }
-        viewBinding.listPosition.setOnItemLongClickListener(){ _: AdapterView<*>, _: View, position: Int, id: Long->
+        viewBinding.fragmentPositionListListPosition.setOnItemLongClickListener(){ _: AdapterView<*>, _: View, position: Int, id: Long->
             logger.log(Level.INFO, "Delete position:  $position")
             var selectedPosition = viewModel.positionArrayNotifier.value?.get(position)
 
@@ -103,7 +103,7 @@ class PositionListFragment : Fragment()  {
                 arrayListOf(),
                 arrayListOf()
             )
-            val list = viewBinding.listPosition
+            val list = viewBinding.fragmentPositionListListPosition
             list.adapter = arrayAdapter
             arrayAdapter.notifyDataSetChanged()
         }
@@ -112,22 +112,6 @@ class PositionListFragment : Fragment()  {
             if(it)
                 goToPositionEntry()
         }
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            logger.log(Level.INFO, "IsLoaded: $it")
-            if (it)
-                showLoading()
-            else
-                hideLoading()
-        }
-    }
-
-
-
-    private fun hideLoading() {
-
-    }
-
-    private fun showLoading() {
     }
 
     private fun goToPositionDetails(position: Position) {

@@ -12,6 +12,7 @@ import android.provider.MediaStore.ACTION_IMAGE_CAPTURE
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,10 +22,7 @@ import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentPositionEntryBinding
 import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.SubtitleMessage
-import java.io.ByteArrayOutputStream
-import java.time.LocalDate
 import java.time.LocalTime
-import java.util.*
 import java.util.logging.Logger
 
 
@@ -36,7 +34,6 @@ class PositionEntryFragment : Fragment()  {
         val logger = Logger.getLogger(PositionEntryFragment::class.simpleName)
 
     }
-    var vFilename: String = ""
     var imageUri: Uri? = null
     private val PICTURE_RESULT = 1
     private lateinit var viewBinding: FragmentPositionEntryBinding
@@ -69,10 +66,14 @@ class PositionEntryFragment : Fragment()  {
                 goToPositionList()
             }
         }
-        viewModel.cameraButtonLiveData.observe(viewLifecycleOwner){
+        viewModel.cameraClickedLiveData.observe(viewLifecycleOwner){
             if(it){
                 openCamera()
             }
+        }
+        viewBinding.fragmentPositionEntryRatingBar.setOnClickListener(){
+            var ratingBar = it as RatingBar
+            viewModel.positionRatingNotifier.value = ratingBar.rating.toInt()
         }
     }
 
@@ -96,7 +97,7 @@ class PositionEntryFragment : Fragment()  {
                         requireContext().contentResolver, imageUri
                     )
                     val rotate = RotateBitmap(thumbnail, (90).toFloat())
-                    viewBinding.imgViewer.setImageBitmap(rotate)
+                    viewBinding.fragmentPositionEntryImage.setImageBitmap(rotate)
                     viewModel.positionImgNotifier.value = rotate
                     viewModel.positionImgPathNotifier.value = requireContext().dataDir.absolutePath + '/' + LocalTime.now()
 
@@ -111,14 +112,6 @@ class PositionEntryFragment : Fragment()  {
         matrix.postRotate(angle)
         return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
-    /*fun getRealPathFromURI(contentUri: Uri?): String? {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor: Cursor = managedQuery(contentUri, proj, null, null, null)
-        val column_index: Int = cursor
-            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor.moveToFirst()
-        return cursor.getString(column_index)
-    }*/
     private fun goToPositionList() {
         if(!findNavController().popBackStack(R.id.positionListFragmentDestination,false))
             findNavController().navigate(R.id.positionListFragmentDestination)
