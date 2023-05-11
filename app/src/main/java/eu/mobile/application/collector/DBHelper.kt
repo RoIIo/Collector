@@ -135,7 +135,35 @@ class DBHelper @Inject constructor(
         db.close()
         return positions
     }
+    fun getPosition(positionId: Int) : Position? {
+        val query = "SELECT * FROM $POSITION_TABLE WHERE $POSITION_ID=?;"
+        var args: Array<String> = arrayOf("$positionId")
+        val db = this.readableDatabase
 
+        val cursor = db.rawQuery(query, args)
+
+        var position: Position? = null
+        if(cursor.moveToFirst())
+        {
+            val id = cursor.getIntOrNull(0)
+            val name = cursor.getStringOrNull(1)
+            val category = cursor.getIntOrNull(2)
+            val image = cursor.getStringOrNull(3)
+            val description = cursor.getStringOrNull(4)
+            val rating = cursor.getInt(5)
+            val total = cursor.getIntOrNull(6)
+            position = Position().apply {
+                this.Id = id
+                this.name = name
+                this.categoryId = category
+                this.imagePath = image
+                this.description = description
+                this.rating = rating
+                this.total = total}
+        }
+        db.close()
+        return position
+    }
     fun addPosition(position: Position): Position{
         val values = ContentValues()
         values.put(POSITION_NAME, position.name)

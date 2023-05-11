@@ -21,6 +21,22 @@ class PositionRepository  @Inject constructor(val db: DBHelper) {
         return withContext(Dispatchers.IO) {
             try {
                 val result = db.getPositions(categoryId)
+                logger.info("SUCESSFULLY GET POSITIONS")
+                Result.success(result)
+            }
+            catch (ex: Exception) {
+                logger.info("FAILED TO GET POSITIONS")
+
+                EventBusHandler.postErrorMessage(ex)
+                Result.failure(ex)
+            }
+        }
+    }
+
+    suspend fun getPosition(positionId: Int): Result<Position> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = db.getPosition(positionId) ?: throw java.lang.Exception("There is no position")
                 logger.info("SUCESSFULLY GET POSITION")
                 Result.success(result)
             }
