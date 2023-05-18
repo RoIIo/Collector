@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentPositionDetailsBinding
+import eu.mobile.application.collector.entity.Position
 import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.SubtitleMessage
 import java.util.logging.Logger
@@ -43,7 +44,10 @@ class PositionDetailsFragment : Fragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val position = args.position
+        var position = args.position
+       // findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Position>("position")?.observe(viewLifecycleOwner){
+       //     position = it
+       // }
         viewModel.initialize(position)
         setupObservers()
         EventBusHandler.postSubtitle(SubtitleMessage().apply { name = position.name })
@@ -54,7 +58,8 @@ class PositionDetailsFragment : Fragment()  {
             viewBinding.fragmentPositionDetailsImage.setImageBitmap(it)
         }
         viewModel.modifyPositionLiveData.observe(viewLifecycleOwner){
-            goToPositionModify()
+            if(it)
+                goToPositionModify()
         }
     }
 

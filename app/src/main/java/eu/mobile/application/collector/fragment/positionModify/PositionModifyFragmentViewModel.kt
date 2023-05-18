@@ -32,7 +32,7 @@ class PositionModifyFragmentViewModel @Inject constructor(
     var positionImageNotifier: MutableLiveData<Bitmap> = MutableLiveData()
     var positionImgPathNotifier: MutableLiveData<String> = MutableLiveData()
 
-    private val addedPositionNotifier: MutableLiveData<Boolean> = MutableLiveData()
+    private val addedPositionNotifier: MutableLiveData<Boolean> = MutableLiveData(false)
     val addedPositionLiveData: LiveData<Boolean> = addedPositionNotifier
     val cameraClickedNotifier: MutableLiveData<Boolean> = MutableLiveData()
     val cameraClickedLiveData: LiveData<Boolean> = cameraClickedNotifier
@@ -53,7 +53,7 @@ class PositionModifyFragmentViewModel @Inject constructor(
                 rating = positionRatingNotifier.value
             })
                 .onSuccess {
-                    EventBusHandler.postMessage(Message().apply { message = "Dodano pozycję" })
+                    EventBusHandler.postMessage(Message().apply { message = "Zmodyfikowano pozycję" })
                     if(oldPath != it.imagePath && !oldPath.isNullOrEmpty()) {
                         val file = File(oldPath)
                         file.delete()
@@ -78,6 +78,7 @@ class PositionModifyFragmentViewModel @Inject constructor(
         positionTotalNotifier.value = position.total?.toString()
         positionDescriptionNotifier.value = position.description
         positionRatingNotifier.value = position.rating
+        addedPositionNotifier.value = false
         loadImage(position.imagePath)
     }
 

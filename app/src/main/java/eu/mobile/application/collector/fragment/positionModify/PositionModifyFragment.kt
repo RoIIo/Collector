@@ -74,11 +74,16 @@ class PositionModifyFragment : Fragment()  {
             var ratingBar = it as RatingBar
             viewModel.positionRatingNotifier.value = ratingBar.rating.toInt()
         }
+
+        viewModel.positionImageNotifier.observe(viewLifecycleOwner){
+            viewBinding.fragmentPositionModifyImage.setImageBitmap(it)
+        }
     }
 
     private fun goToPositionDetails() {
-        val action = PositionModifyFragmentDirections.actionPositionModifyFragmentToPositionDetailsFragment(viewModel.positionNotifier.value!!)
-        findNavController().navigate(action)
+        val navController = findNavController()
+        //navController.previousBackStackEntry?.savedStateHandle?.set("position", viewModel.positionNotifier.value)
+        navController.popBackStack()
     }
 
     private fun openCamera() {

@@ -16,7 +16,7 @@ class PositionDetailsViewModel @Inject constructor(): ViewModel() {
     var isLoadingNotifier = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = isLoadingNotifier
 
-    val modifyPositionNotifier: MutableLiveData<Boolean> = MutableLiveData()
+    val modifyPositionNotifier: MutableLiveData<Boolean> = MutableLiveData(false)
     val modifyPositionLiveData: LiveData<Boolean> = modifyPositionNotifier
 
     var positionNameNotifier: MutableLiveData<String> = MutableLiveData()
@@ -38,6 +38,7 @@ class PositionDetailsViewModel @Inject constructor(): ViewModel() {
         positionTotalNotifier.value = position.total?.toString()
         positionDescriptionNotifier.value = position.description
         positionRatingNotifier.value = position.rating
+        modifyPositionNotifier.value = false
         loadImage(position.imagePath)
     }
 
