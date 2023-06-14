@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.databinding.DataBindingUtil.setContentView
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,9 +15,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentCategoryListBinding
 import eu.mobile.application.collector.entity.Category
+import eu.mobile.application.collector.entity.Position
 import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
 import eu.mobile.application.collector.event.SubtitleMessage
+import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -32,6 +34,7 @@ class CategoryListFragment : Fragment() {
     private lateinit var viewBinding: FragmentCategoryListBinding
     private val viewModel by viewModels<CategoryListViewModel>()
     private lateinit var arrayAdapter: ArrayAdapter<*>
+    private lateinit var searchView: SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,20 +51,47 @@ class CategoryListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.initialize()
         setupList()
+        setupSearch()
         setupObservers()
         EventBusHandler.postSubtitle(SubtitleMessage().apply { name = "" })
     }
 
+    private fun setupSearch(){
+        var searchView = viewBinding.fragmentCategoryListSearch
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if(query == null)
+                    return false
+                if (viewModel.categoryArrayNotifier.value!!.any { category->
+                        category.name?.contains(query) == true}) {
+                    arrayAdapter.filter.filter(query)
+                } else {
+                    EventBusHandler.postMessage(Message().apply { message= "Nie znaleziono żadnej kategorii"})
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                arrayAdapter.filter.filter(newText)
+                return false
+            }
+        })
+    }
+
     private fun setupList() {
         val arrayAdapter: ArrayAdapter<*>
-        if(viewModel.categoryArray.value == null) viewModel.categoryArray.value = arrayListOf()
+        if(viewModel.categoryArrayNotifier.value == null) viewModel.categoryArrayNotifier.value = arrayListOf()
 
+        viewModel.categoryArrayNotifier.value!!.sortWith { obj1, obj2 ->
+            obj1.name!!.compareTo(obj2.name!!)
+        }
         arrayAdapter = ArrayAdapter(
             requireContext(),
             R.layout.row_category,
-            viewModel.categoryArray.value!!.map { it.name }
+            viewModel.categoryArrayNotifier.value!!.map { it.name }
         )
-        logger.log(Level.INFO, "Size ${viewModel.categoryArray.value?.size}")
+
+        logger.log(Level.INFO, "Size ${viewModel.categoryArrayNotifier.value?.size}")
         val list = viewBinding.fragmentCategoryListListCategory
         list.adapter = arrayAdapter
         this.arrayAdapter = arrayAdapter
@@ -70,7 +100,7 @@ class CategoryListFragment : Fragment() {
     private fun setupObservers(){
 
         viewBinding.fragmentCategoryListListCategory.setOnItemClickListener{ _: AdapterView<*>, _: View, position: Int, id: Long ->
-            val category = viewModel.categoryArray.value?.get(position)
+            val category = viewModel.categoryArrayNotifier.value?.get(position)
             if(category!= null)
                 goToPositionList(category)
             else
@@ -79,7 +109,7 @@ class CategoryListFragment : Fragment() {
         }
         viewBinding.fragmentCategoryListListCategory.setOnItemLongClickListener(){ _: AdapterView<*>, _: View, position: Int, id: Long->
             logger.log(Level.INFO, "Delete category:  $position")
-            var selectedCategory = viewModel.categoryArray.value?.get(position)
+            var selectedCategory = viewModel.categoryArrayNotifier.value?.get(position)
 
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(resources.getString(R.string.fragment_category_list_delete_title))
@@ -93,16 +123,9 @@ class CategoryListFragment : Fragment() {
             true
         }
 
-        viewModel.categoryArray.observe(viewLifecycleOwner){
-            logger.log(Level.INFO, "Category list changed size: ${viewModel.categoryArray.value?.size}")
-            arrayAdapter = ArrayAdapter(
-                requireContext(),
-                R.layout.row_category,
-                viewModel.categoryArray.value!!.map { it.name }
-            )
-            val list = viewBinding.fragmentCategoryListListCategory
-            list.adapter = arrayAdapter
-            arrayAdapter.notifyDataSetChanged()
+        viewModel.categoryArrayNotifier.observe(viewLifecycleOwner){
+            logger.log(Level.INFO, "Category list changed size: ${viewModel.categoryArrayNotifier.value?.size}")
+            setupList()
         }
         viewModel.categoryEntryPressed.observe(viewLifecycleOwner) {
             logger.log(Level.INFO, "Add category pressed")

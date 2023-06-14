@@ -25,7 +25,7 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
 
     var isLoadingNotifier = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = isLoadingNotifier
-    val categoryArray: MutableLiveData<ArrayList<Category>> = MutableLiveData(arrayListOf())
+    val categoryArrayNotifier: MutableLiveData<ArrayList<Category>> = MutableLiveData(arrayListOf())
     fun addCategoryPressed(){
         categoryEntryPressedNotifier.value = true
     }
@@ -33,15 +33,15 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
         viewModelScope.launch {
             isLoadingNotifier.value = true
 
-            val id = categoryArray.value?.get(position)?.Id ?: return@launch
+            val id = categoryArrayNotifier.value?.get(position)?.Id ?: return@launch
             categoryRepository.deleteCategory(id)
                 .onSuccess {
                     logger.info("Pomyślnie usunięto kategorię")
                     EventBusHandler.postMessage(Message().apply { message = "Pomyślnie usunięto kategorię" })
-                    categoryArray.value?.removeAt(position)
+                    categoryArrayNotifier.value?.removeAt(position)
                     val newList = MutableLiveData(arrayListOf<Category>())
-                    newList.value?.addAll(categoryArray.value!!)
-                    categoryArray.value = newList.value
+                    newList.value?.addAll(categoryArrayNotifier.value!!)
+                    categoryArrayNotifier.value = newList.value
                 }
                 .onFailure {
                     EventBusHandler.postErrorMessage(it)
@@ -61,7 +61,7 @@ class CategoryListViewModel @Inject constructor(val categoryRepository: Category
             isLoadingNotifier.value = true
             categoryRepository.getCategories().onSuccess {
                 logger.log(Level.INFO,"get categories: $it. Size: ${it.size}")
-                categoryArray.value = ArrayList(it)
+                categoryArrayNotifier.value = ArrayList(it)
             }
                 .onFailure {
                     logger.log(Level.WARNING, "Failed to get categories: $it")

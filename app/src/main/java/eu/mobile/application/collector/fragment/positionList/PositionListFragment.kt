@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,9 @@ import eu.mobile.application.collector.entity.Position
 import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
 import eu.mobile.application.collector.event.SubtitleMessage
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.forEach
+import kotlinx.coroutines.flow.toList
 import java.util.logging.Level
 import java.util.logging.Logger
 @AndroidEntryPoint
@@ -32,7 +36,8 @@ class PositionListFragment : Fragment()  {
     private val args: PositionListFragmentArgs by navArgs()
     private lateinit var viewBinding: FragmentPositionListBinding
     private val viewModel by viewModels<PositionListViewModel>()
-    private lateinit var arrayAdapter: PositionListAdapter
+    private lateinit var arrayAdapter: ArrayAdapter<*>
+    private lateinit var  searchView: SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,19 +56,44 @@ class PositionListFragment : Fragment()  {
         val category = args.category
         viewModel.initialize(category)
         setupList()
+        setupSearch()
         setupObservers()
         EventBusHandler.postSubtitle(SubtitleMessage().apply { name = category.name})
     }
 
-    private fun setupList() {
-        if(viewModel.positionArrayNotifier.value == null) viewModel.positionArrayNotifier.value = arrayListOf()
+    private fun setupSearch(){
+        var searchView = viewBinding.fragmentPositionListSearch
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if(query == null)
+                    return false
+                if (viewModel.positionArrayNotifier.value!!.any {category->
+                        category.name?.contains(query) == true}) {
+                    arrayAdapter.filter.filter(query)
+                } else {
+                    EventBusHandler.postMessage(Message().apply { message= "Nie znaleziono żadnej pozycji"})
+                }
+                return false
+            }
 
-        val arrayAdapter = PositionListAdapter(
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                arrayAdapter.filter.filter(newText)
+                return false
+            }
+        })
+    }
+
+    private fun setupList() {
+        val arrayAdapter: ArrayAdapter<*>
+        if(viewModel.positionArrayNotifier.value == null) viewModel.positionArrayNotifier.value = arrayListOf()
+        viewModel.positionArrayNotifier.value!!.sortWith { obj1, obj2 ->
+            obj1.name!!.compareTo(obj2.name!!)
+        }
+        arrayAdapter = ArrayAdapter(
             requireContext(),
-            ArrayList(viewModel.positionArrayNotifier.value!!.map { it.name!! }),
-            arrayListOf(),
-            arrayListOf()
-        )
+            R.layout.row_position,
+            viewModel.positionArrayNotifier.value!!.map{it.name})
         logger.log(Level.INFO, "Size ${viewModel.positionArrayNotifier.value?.size}")
         val list = viewBinding.fragmentPositionListListPosition
         list.adapter = arrayAdapter
@@ -96,16 +126,8 @@ class PositionListFragment : Fragment()  {
         }
 
         viewModel.positionArrayNotifier.observe(viewLifecycleOwner){
-            logger.log(Level.INFO, "Category list changed size: ${viewModel.positionArrayNotifier.value?.size}")
-            val arrayAdapter = PositionListAdapter(
-                requireContext(),
-                ArrayList(viewModel.positionArrayNotifier.value!!.map { it.name!! }),
-                arrayListOf(),
-                arrayListOf()
-            )
-            val list = viewBinding.fragmentPositionListListPosition
-            list.adapter = arrayAdapter
-            arrayAdapter.notifyDataSetChanged()
+            logger.log(Level.INFO, "Position list changed size: ${viewModel.positionArrayNotifier.value?.size}")
+            setupList()
         }
         viewModel.positionPressed.observe(viewLifecycleOwner) {
             logger.log(Level.INFO, "Add position pressed")
