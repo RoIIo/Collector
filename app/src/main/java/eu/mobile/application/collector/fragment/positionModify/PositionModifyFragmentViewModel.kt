@@ -47,7 +47,7 @@ class PositionModifyFragmentViewModel @Inject constructor(
     val addedPositionLiveData: LiveData<Boolean> = addedPositionNotifier
     val cameraClickedNotifier: MutableLiveData<Boolean> = MutableLiveData()
     val cameraClickedLiveData: LiveData<Boolean> = cameraClickedNotifier
-    var category: Category? = null
+    var categoryId: Int? = null
     fun acceptPositionPressed(){
         if (positionNameNotifier.value.isNullOrEmpty()) {
             EventBusHandler.postMessage(Message().apply { message = "Musisz wpisać nazwę pozycji" })
@@ -58,7 +58,7 @@ class PositionModifyFragmentViewModel @Inject constructor(
             isLoadingNotifier.value = true
             positionRepository.modifyPosition(positionNotifier.value!!.apply {
                 name = positionNameNotifier.value!!
-                categoryId = category?.Id
+                categoryId = categoryId
                 imageBitMap = positionImgNotifier.value
                 imagePath = positionImgPathNotifier.value
                 description = positionDescriptionNotifier.value
@@ -95,6 +95,7 @@ class PositionModifyFragmentViewModel @Inject constructor(
     fun initialize(position: Position){
         positionNotifier.value = position
         positionNameNotifier.value = position.name
+        categoryId = position.categoryId
         positionTotalNotifier.value = position.total?.toString()
         positionDescriptionNotifier.value = position.description
         positionNotesNotifier.value = position.notes
@@ -104,6 +105,7 @@ class PositionModifyFragmentViewModel @Inject constructor(
         positionSerialNotifier.value = position.serial
         positionOriginNotifier.value = position.origin
         positionAddDateNotifier.value = position.addDate
+        positionImgPathNotifier.value = position.imagePath
         loadImage(position.imagePath)
     }
 
