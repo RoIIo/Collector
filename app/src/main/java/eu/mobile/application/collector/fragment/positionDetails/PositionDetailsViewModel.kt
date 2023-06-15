@@ -53,14 +53,14 @@ class PositionDetailsViewModel @Inject constructor(): ViewModel() {
     val isPositionAddDateVisible: LiveData<Boolean> = positionAddDateNotifier.map { !it.isNullOrEmpty() }
 
     var positionUpdateDateNotifier: MutableLiveData<String> = MutableLiveData()
-    val isPositionUpdateDateVisible: LiveData<Boolean> = positionAddDateNotifier.map { !it.isNullOrEmpty() }
+    val isPositionUpdateDateVisible: LiveData<Boolean> = positionUpdateDateNotifier.map { !it.isNullOrEmpty() }
     fun initialize(position : Position){
         positionNameNotifier.value = position.name
         positionTotalNotifier.value = position.total?.toString()
         positionDescriptionNotifier.value = position.description
         positionNotesNotifier.value = position.notes
         positionProducentNotifier.value = position.producent
-        positionPriceNotifier.value = position.price.toString()
+        positionPriceNotifier.value = position.price?.toString()
         positionConditionNotifier.value = position.condition
         positionSerialNotifier.value = position.serial
         positionOriginNotifier.value = position.origin

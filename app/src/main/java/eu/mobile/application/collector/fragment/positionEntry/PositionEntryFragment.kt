@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
@@ -22,6 +23,8 @@ import eu.mobile.application.collector.R
 import eu.mobile.application.collector.databinding.FragmentPositionEntryBinding
 import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.SubtitleMessage
+import java.io.ByteArrayOutputStream
+import java.lang.System.out
 import java.time.LocalTime
 import java.util.logging.Logger
 
@@ -92,9 +95,10 @@ class PositionEntryFragment : Fragment()  {
                     val thumbnail = MediaStore.Images.Media.getBitmap(
                         requireContext().contentResolver, imageUri
                     )
-                    val rotate = RotateBitmap(thumbnail, (90).toFloat())
-                    viewBinding.fragmentPositionEntryImage.setImageBitmap(rotate)
-                    viewModel.positionImgNotifier.value = rotate
+                    val rotate = RotateBitmap(thumbnail, (90).toFloat()) ?: return
+                    val compressedBitMap = compressBitmap(rotate)
+                    viewBinding.fragmentPositionEntryImage.setImageBitmap(compressedBitMap)
+                    viewModel.positionImgNotifier.value = compressedBitMap
                     viewModel.positionImgPathNotifier.value = requireContext().dataDir.absolutePath + '/' + LocalTime.now()
 
                 } catch (e: Exception) {
@@ -107,6 +111,16 @@ class PositionEntryFragment : Fragment()  {
         val matrix = Matrix()
         matrix.postRotate(angle)
         return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+    }
+    private fun compressBitmap(bitmap: Bitmap): Bitmap {
+
+        val stream = ByteArrayOutputStream()
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG,50,stream)
+
+        val byteArray = stream.toByteArray()
+
+        return BitmapFactory.decodeByteArray(byteArray,0,byteArray.size)
     }
     private fun goToPositionList() {
         if(!findNavController().popBackStack(R.id.positionListFragmentDestination,false))

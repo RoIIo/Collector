@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:iconifiedByDefault="false"
+            android:layout_marginTop="16dp"
             android:queryHint="@string/fragment_category_list_search_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

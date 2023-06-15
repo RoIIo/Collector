@@ -24,14 +24,14 @@ class DBHelper @Inject constructor(
 
     companion object{
         private val DATABASE_NAME = "Collector.db"
-        private val DATABASE_VERSION = 7
+        private val DATABASE_VERSION = 1
 
         val CATEGORIES_TABLE = "categories"
-        val CATEGORY_ID = "id"
+        val CATEGORY_ID = "category_id"
         val CATEGORY_NAME = "name"
 
         val POSITION_TABLE = "positions"
-        val POSITION_ID = "id"
+        val POSITION_ID = "position_id"
         val POSITION_NAME = "name"
         val POSITION_CATEGORY_ID = "category_id"
         val POSITION_IMAGE = "image"
@@ -47,18 +47,22 @@ class DBHelper @Inject constructor(
         val POSITION_NOTES = "notes"
 
     }
+    override fun onConfigure(db: SQLiteDatabase) {
+        super.onConfigure(db)
+        db.setForeignKeyConstraintsEnabled(true)
+    }
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(tableCategoriesQuery)
         db.execSQL(tablePositionsQuery)
     }
     private val tableCategoriesQuery = "CREATE TABLE IF NOT EXISTS " + CATEGORIES_TABLE + " (" +
-            CATEGORY_ID + " INTEGER PRIMARY KEY, " +
+            CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             CATEGORY_NAME + " TEXT)"
 
     private val tablePositionsQuery = "CREATE TABLE IF NOT EXISTS " + POSITION_TABLE + " (" +
-            POSITION_ID + " INTEGER PRIMARY KEY, " +
+            POSITION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             POSITION_NAME + " TEXT, " +
-            POSITION_CATEGORY_ID + " INTEGER, " +
+            POSITION_CATEGORY_ID + " INTEGER NOT NULL, " +
             POSITION_IMAGE + " TEXT, " +
             POSITION_DESCRIPTION + " TEXT, " +
             POSITION_TOTAL + " INTEGER, " +
@@ -70,11 +74,11 @@ class DBHelper @Inject constructor(
             POSITION_SERIAL + " Text, " +
             POSITION_ORIGIN + " Text, " +
             POSITION_NOTES + " Text, " +
-            "FOREIGN KEY($POSITION_CATEGORY_ID) REFERENCES $CATEGORIES_TABLE($CATEGORY_ID))"
+            "FOREIGN KEY($POSITION_CATEGORY_ID) REFERENCES $CATEGORIES_TABLE($CATEGORY_ID) ON DELETE CASCADE)"
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $CATEGORIES_TABLE")
         db.execSQL("DROP TABLE IF EXISTS $POSITION_TABLE")
+        db.execSQL("DROP TABLE IF EXISTS $CATEGORIES_TABLE")
         onCreate(db)
     }
 

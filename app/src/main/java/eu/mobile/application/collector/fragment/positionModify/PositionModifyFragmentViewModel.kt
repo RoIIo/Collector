@@ -99,7 +99,7 @@ class PositionModifyFragmentViewModel @Inject constructor(
         positionDescriptionNotifier.value = position.description
         positionNotesNotifier.value = position.notes
         positionProducentNotifier.value = position.producent
-        positionPriceNotifier.value = position.price.toString()
+        positionPriceNotifier.value = position.price?.toString()
         positionConditionNotifier.value = position.condition
         positionSerialNotifier.value = position.serial
         positionOriginNotifier.value = position.origin

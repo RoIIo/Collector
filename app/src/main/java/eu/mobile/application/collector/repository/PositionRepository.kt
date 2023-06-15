@@ -105,7 +105,7 @@ class PositionRepository  @Inject constructor(val db: DBHelper) {
             val file = File(filePath)
             val fOut = FileOutputStream(file)
 
-            imageBitMap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
+            imageBitMap.compress(Bitmap.CompressFormat.JPEG, 50, fOut)
             fOut.flush()
             fOut.close()
         }
