@@ -1,6 +1,7 @@
 package eu.mobile.application.collector.fragment.positionEntry
 
 import android.graphics.Bitmap
+import androidx.core.database.getIntOrNull
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,8 @@ import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
 import eu.mobile.application.collector.repository.PositionRepository
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.logging.Logger
 import javax.inject.Inject
 @HiltViewModel
@@ -28,7 +31,13 @@ class PositionEntryViewModel @Inject constructor(
     var positionNameNotifier: MutableLiveData<String> = MutableLiveData()
     var positionDescriptionNotifier: MutableLiveData<String> = MutableLiveData()
     var positionTotalNotifier: MutableLiveData<String> = MutableLiveData()
-    var positionRatingNotifier: MutableLiveData<Int> = MutableLiveData()
+    var positionNotesNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionProducentNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionPriceNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionConditionNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionSerialNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionOriginNotifier: MutableLiveData<String> = MutableLiveData()
+
     var positionImgNotifier: MutableLiveData<Bitmap> = MutableLiveData()
     var positionImgPathNotifier: MutableLiveData<String> = MutableLiveData()
 
@@ -57,7 +66,14 @@ class PositionEntryViewModel @Inject constructor(
                 imagePath = positionImgPathNotifier.value
                 description = positionDescriptionNotifier.value
                 total = positionTotalNotifier.value?.toIntOrNull()
-                rating = positionRatingNotifier.value
+                producent = positionProducentNotifier.value
+                price = positionPriceNotifier.value?.toIntOrNull()
+                condition = positionConditionNotifier.value
+                serial = positionSerialNotifier.value
+                origin = positionOriginNotifier.value
+                notes = positionNotesNotifier.value
+                addDate =  SimpleDateFormat("dd-MM-yyyy", Locale("pl", "PL")).format(Date())
+                updateDate =  SimpleDateFormat("dd-MM-yyyy", Locale("pl", "PL")).format(Date())
             })
                 .onSuccess {
                     EventBusHandler.postMessage(Message().apply { message = "Dodano pozycję" })

@@ -2,17 +2,21 @@ package eu.mobile.application.collector.fragment.positionModify
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.core.database.getIntOrNull
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.entity.Position
 import eu.mobile.application.collector.event.EventBusHandler
 import eu.mobile.application.collector.event.Message
 import eu.mobile.application.collector.repository.PositionRepository
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,14 +32,22 @@ class PositionModifyFragmentViewModel @Inject constructor(
     var positionNameNotifier: MutableLiveData<String> = MutableLiveData()
     var positionDescriptionNotifier: MutableLiveData<String> = MutableLiveData()
     var positionTotalNotifier: MutableLiveData<String> = MutableLiveData()
-    var positionRatingNotifier: MutableLiveData<Int> = MutableLiveData()
-    var positionImageNotifier: MutableLiveData<Bitmap> = MutableLiveData()
+    var positionNotesNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionProducentNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionPriceNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionConditionNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionSerialNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionOriginNotifier: MutableLiveData<String> = MutableLiveData()
+    var positionAddDateNotifier: MutableLiveData<String> = MutableLiveData()
+
+    var positionImgNotifier: MutableLiveData<Bitmap> = MutableLiveData()
     var positionImgPathNotifier: MutableLiveData<String> = MutableLiveData()
 
-    private val addedPositionNotifier: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val addedPositionNotifier: MutableLiveData<Boolean> = MutableLiveData()
     val addedPositionLiveData: LiveData<Boolean> = addedPositionNotifier
     val cameraClickedNotifier: MutableLiveData<Boolean> = MutableLiveData()
     val cameraClickedLiveData: LiveData<Boolean> = cameraClickedNotifier
+    var category: Category? = null
     fun acceptPositionPressed(){
         if (positionNameNotifier.value.isNullOrEmpty()) {
             EventBusHandler.postMessage(Message().apply { message = "Musisz wpisać nazwę pozycji" })
@@ -45,12 +57,20 @@ class PositionModifyFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             isLoadingNotifier.value = true
             positionRepository.modifyPosition(positionNotifier.value!!.apply {
-                name = positionNameNotifier.value
-                imageBitMap = positionImageNotifier.value
+                name = positionNameNotifier.value!!
+                categoryId = category?.Id
+                imageBitMap = positionImgNotifier.value
                 imagePath = positionImgPathNotifier.value
                 description = positionDescriptionNotifier.value
                 total = positionTotalNotifier.value?.toIntOrNull()
-                rating = positionRatingNotifier.value
+                producent = positionProducentNotifier.value
+                price = positionPriceNotifier.value?.toIntOrNull()
+                condition = positionConditionNotifier.value
+                serial = positionSerialNotifier.value
+                origin = positionOriginNotifier.value
+                notes = positionNotesNotifier.value
+                addDate = positionAddDateNotifier.value
+                updateDate =  SimpleDateFormat("dd-MM-yyyy", Locale("pl", "PL")).format(Date())
             })
                 .onSuccess {
                     EventBusHandler.postMessage(Message().apply { message = "Zmodyfikowano pozycję" })
@@ -77,8 +97,13 @@ class PositionModifyFragmentViewModel @Inject constructor(
         positionNameNotifier.value = position.name
         positionTotalNotifier.value = position.total?.toString()
         positionDescriptionNotifier.value = position.description
-        positionRatingNotifier.value = position.rating
-        addedPositionNotifier.value = false
+        positionNotesNotifier.value = position.notes
+        positionProducentNotifier.value = position.producent
+        positionPriceNotifier.value = position.price.toString()
+        positionConditionNotifier.value = position.condition
+        positionSerialNotifier.value = position.serial
+        positionOriginNotifier.value = position.origin
+        positionAddDateNotifier.value = position.addDate
         loadImage(position.imagePath)
     }
 
@@ -86,6 +111,6 @@ class PositionModifyFragmentViewModel @Inject constructor(
         if(path.isNullOrEmpty()) return
 
         val bitmap = BitmapFactory.decodeFile(path)
-        positionImageNotifier.value = bitmap
+        positionImgNotifier.value = bitmap
     }
 }

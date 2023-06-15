@@ -4,13 +4,17 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import androidx.core.database.getFloatOrNull
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getStringOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.mobile.application.collector.entity.Category
 import eu.mobile.application.collector.entity.Position
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.collections.ArrayList
 
 @Singleton
 class DBHelper @Inject constructor(
@@ -20,7 +24,7 @@ class DBHelper @Inject constructor(
 
     companion object{
         private val DATABASE_NAME = "Collector.db"
-        private val DATABASE_VERSION = 5
+        private val DATABASE_VERSION = 7
 
         val CATEGORIES_TABLE = "categories"
         val CATEGORY_ID = "id"
@@ -32,8 +36,15 @@ class DBHelper @Inject constructor(
         val POSITION_CATEGORY_ID = "category_id"
         val POSITION_IMAGE = "image"
         val POSITION_DESCRIPTION = "description"
-        val POSITION_RATING = "rating"
         val POSITION_TOTAL = "total"
+        val POSITION_ADD_DATE = "add_date"
+        val POSITION_UPDATE_DATE = "update_date"
+        val POSITION_PRODUCENT = "producent"
+        val POSITION_PRICE = "price"
+        val POSITION_CONDITION = "condition"
+        val POSITION_SERIAL = "serial"
+        val POSITION_ORIGIN = "origin"
+        val POSITION_NOTES = "notes"
 
     }
     override fun onCreate(db: SQLiteDatabase) {
@@ -50,8 +61,15 @@ class DBHelper @Inject constructor(
             POSITION_CATEGORY_ID + " INTEGER, " +
             POSITION_IMAGE + " TEXT, " +
             POSITION_DESCRIPTION + " TEXT, " +
-            POSITION_RATING + " INTEGER, " +
             POSITION_TOTAL + " INTEGER, " +
+            POSITION_ADD_DATE + " Text, " +
+            POSITION_UPDATE_DATE + " Text, " +
+            POSITION_PRODUCENT + " Text, " +
+            POSITION_PRICE + " INTEGER, " +
+            POSITION_CONDITION + " TEXT, " +
+            POSITION_SERIAL + " Text, " +
+            POSITION_ORIGIN + " Text, " +
+            POSITION_NOTES + " Text, " +
             "FOREIGN KEY($POSITION_CATEGORY_ID) REFERENCES $CATEGORIES_TABLE($CATEGORY_ID))"
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
@@ -120,16 +138,30 @@ class DBHelper @Inject constructor(
             val category = cursor.getIntOrNull(2)
             val image = cursor.getStringOrNull(3)
             val description = cursor.getStringOrNull(4)
-            val rating = cursor.getInt(5)
-            val total = cursor.getIntOrNull(6)
+            val total = cursor.getIntOrNull(5)
+            val addDate = cursor.getStringOrNull(6)
+            val updateDate = cursor.getStringOrNull(7)
+            val producent = cursor.getStringOrNull(8)
+            val price = cursor.getIntOrNull(9)
+            val condition = cursor.getStringOrNull(10)
+            val serial = cursor.getStringOrNull(11)
+            val origin = cursor.getStringOrNull(12)
+            val notes = cursor.getStringOrNull(13)
             position = Position().apply {
                 this.Id = id
                 this.name = name
                 this.categoryId = category
                 this.imagePath = image
                 this.description = description
-                this.rating = rating
-                this.total = total}
+                this.total = total
+                this.addDate = addDate
+                this.updateDate = updateDate
+                this.producent = producent
+                this.price = price
+                this.condition = condition
+                this.serial = serial
+                this.origin = origin
+                this.notes = notes}
             positions.add(position)
         }
         db.close()
@@ -150,16 +182,30 @@ class DBHelper @Inject constructor(
             val category = cursor.getIntOrNull(2)
             val image = cursor.getStringOrNull(3)
             val description = cursor.getStringOrNull(4)
-            val rating = cursor.getInt(5)
-            val total = cursor.getIntOrNull(6)
+            val total = cursor.getIntOrNull(5)
+            val addDate = cursor.getStringOrNull(6)
+            val updateDate = cursor.getStringOrNull(7)
+            val producent = cursor.getStringOrNull(8)
+            val price = cursor.getIntOrNull(9)
+            val condition = cursor.getStringOrNull(10)
+            val serial = cursor.getStringOrNull(11)
+            val origin = cursor.getStringOrNull(12)
+            val notes = cursor.getStringOrNull(13)
             position = Position().apply {
                 this.Id = id
                 this.name = name
                 this.categoryId = category
                 this.imagePath = image
                 this.description = description
-                this.rating = rating
-                this.total = total}
+                this.total = total
+                this.addDate = addDate
+                this.updateDate = updateDate
+                this.producent = producent
+                this.price = price
+                this.condition = condition
+                this.serial = serial
+                this.origin = origin
+                this.notes = notes}
         }
         db.close()
         return position
@@ -170,9 +216,15 @@ class DBHelper @Inject constructor(
         values.put(POSITION_CATEGORY_ID, position.categoryId)
         values.put(POSITION_IMAGE, position.imagePath)
         values.put(POSITION_DESCRIPTION, position.description)
-        values.put(POSITION_RATING, position.rating)
         values.put(POSITION_TOTAL, position.total)
-
+        values.put(POSITION_ADD_DATE, position.addDate)
+        values.put(POSITION_UPDATE_DATE, position.updateDate)
+        values.put(POSITION_PRODUCENT, position.producent)
+        values.put(POSITION_PRICE, position.price)
+        values.put(POSITION_CONDITION, position.condition)
+        values.put(POSITION_SERIAL,position.serial)
+        values.put(POSITION_ORIGIN,position.origin)
+        values.put(POSITION_NOTES, position.notes)
         val db = this.writableDatabase
         val id = db.insert(POSITION_TABLE, null, values)
         db.close()
@@ -186,9 +238,15 @@ class DBHelper @Inject constructor(
         values.put(POSITION_CATEGORY_ID, position.categoryId)
         values.put(POSITION_IMAGE, position.imagePath)
         values.put(POSITION_DESCRIPTION, position.description)
-        values.put(POSITION_RATING, position.rating)
         values.put(POSITION_TOTAL, position.total)
-
+        values.put(POSITION_ADD_DATE, position.addDate)
+        values.put(POSITION_UPDATE_DATE, position.updateDate)
+        values.put(POSITION_PRODUCENT, position.producent)
+        values.put(POSITION_PRICE, position.price)
+        values.put(POSITION_CONDITION, position.condition)
+        values.put(POSITION_SERIAL,position.serial)
+        values.put(POSITION_ORIGIN,position.origin)
+        values.put(POSITION_NOTES, position.notes)
         val db = this.writableDatabase
         db.update(POSITION_TABLE, values,"$POSITION_ID = ?", arrayOf(position.Id.toString()))
         db.close()

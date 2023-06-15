@@ -70,12 +70,8 @@ class PositionModifyFragment : Fragment()  {
                 openCamera()
             }
         }
-        viewBinding.fragmentPositionModifyRatingBar.setOnClickListener(){
-            var ratingBar = it as RatingBar
-            viewModel.positionRatingNotifier.value = ratingBar.rating.toInt()
-        }
 
-        viewModel.positionImageNotifier.observe(viewLifecycleOwner){
+        viewModel.positionImgNotifier.observe(viewLifecycleOwner){
             viewBinding.fragmentPositionModifyImage.setImageBitmap(it)
         }
     }
@@ -107,7 +103,7 @@ class PositionModifyFragment : Fragment()  {
                     )
                     val rotate = RotateBitmap(thumbnail, (90).toFloat())
                     viewBinding.fragmentPositionModifyImage.setImageBitmap(rotate)
-                    viewModel.positionImageNotifier.value = rotate
+                    viewModel.positionImgNotifier.value = rotate
                     viewModel.positionImgPathNotifier.value = requireContext().dataDir.absolutePath + '/' + LocalTime.now()
 
                 } catch (e: Exception) {

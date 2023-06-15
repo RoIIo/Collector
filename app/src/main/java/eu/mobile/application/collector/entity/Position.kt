@@ -3,6 +3,7 @@ package eu.mobile.application.collector.entity
 import android.os.Parcel
 import android.os.Parcelable
 import android.graphics.Bitmap
+import java.util.Date
 
 class Position() : Parcelable {
     var Id: Int? = null
@@ -10,8 +11,15 @@ class Position() : Parcelable {
     var categoryId: Int? = null
     var imagePath: String? = null
     var description: String? = null
-    var rating: Int? = null
     var total: Int? = null
+    var addDate: String? = null
+    var updateDate: String? = null
+    var producent: String? = null
+    var price: Int? = null
+    var condition: String? = null
+    var serial: String? = null
+    var origin: String? = null
+    var notes: String? = null
     var imageBitMap: Bitmap? = null
 
 

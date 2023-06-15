@@ -32,5 +32,36 @@
     <string name="fragment_position_modify_position_name_entry">Wpisz nazwę</string>
     <string name="fragment_position_modify_description">Opis pozycji</string>
     <string name="fragment_position_entry_total">Ilość</string>
+    <string name="fragment_position_entry_describtion">Opis</string>
+    <string name="fragment_position_entry_name">Nazwa</string>
+    <string name="fragment_position_entry_producent">Producent</string>
+    <string name="fragment_position_entry_price">Cena</string>
+    <string name="fragment_position_entry_condition">Stan</string>
+    <string name="fragment_position_entry_serial">Kod</string>
+    <string name="fragment_position_entry_origin">Pochodzenie</string>
+    <string name="fragment_position_entry_notes">Notatka</string>
+    <string name="fragment_position_entry_date">Data wypuszczenia</string>
+
+    <string name="fragment_position_details_total">Ilość</string>
+    <string name="fragment_position_details_name">Nazwa</string>
+    <string name="fragment_position_details_describtion">Opis</string>
+    <string name="fragment_position_details_producent">Producent</string>
+    <string name="fragment_position_details_price">Cena</string>
+    <string name="fragment_position_details_condition">Stan</string>
+    <string name="fragment_position_details_serial">Kod</string>
+    <string name="fragment_position_details_origin">Pochodzenie</string>
+    <string name="fragment_position_details_notes">Notatka</string>
+    <string name="fragment_position_details_date">Data wypuszczenia</string>
+    <string name="fragment_position_details_update_date">Data modyfikacji</string>
+    <string name="fragment_position_details_add_date">Data dodania</string>
+    <string name="fragment_position_modify_name">Nazwa</string>
+    <string name="fragment_position_modify_describtion">Opis</string>
+    <string name="fragment_position_modify_notes">Notatka</string>
+    <string name="fragment_position_modify_producent">Producent</string>
+    <string name="fragment_position_modify_price">Cena</string>
+    <string name="fragment_position_modify_condition">Stan</string>
+    <string name="fragment_position_modify_serial">Kod</string>
+    <string name="fragment_position_modify_origin">Pochodzenie</string>
+    <string name="fragment_position_modify_total">Ilość</string>
 
 </resources>

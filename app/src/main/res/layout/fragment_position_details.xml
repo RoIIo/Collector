@@ -10,19 +10,295 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/fragment_position_details_name"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_margin="10dp"
-            android:inputType="text"
-            android:text="@={viewModel.positionNameNotifier}"
-            android:enabled="@{!viewModel.isLoading}"
-            visibleOrGone="@{viewModel.isPositionNameVisible}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
 
+    <ScrollView
+        android:id="@+id/fragment_position_entry_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fragment_position_details_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            visibleOrGone="@{viewModel.isPositionNameVisible}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionNameNotifier}"
+                android:focusable="false"
+                android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_description"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_describtion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_name"
+            visibleOrGone="@{viewModel.isPositionDescriptionVisible}">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_description_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionDescriptionNotifier}"
+            android:focusable="false"
+            android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_notes"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_notes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_description"
+            visibleOrGone="@{viewModel.isPositionNotesVisible}">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_notes_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionNotesNotifier}"
+            android:focusable="false"
+            android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_producent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_producent"
+            app:layout_constraintEnd_toStartOf="@id/fragment_position_details_guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_notes"
+            visibleOrGone="@{viewModel.isPositionProducentVisible}">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_producent_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionProducentNotifier}"
+            android:focusable="false"
+            android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_price"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/fragment_position_details_guideline"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_notes"
+            visibleOrGone="@{viewModel.isPositionPriceVisible}">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_price_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionPriceNotifier}"
+            android:focusable="false"
+            android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_condition"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_condition"
+            app:layout_constraintEnd_toStartOf="@id/fragment_position_details_guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_producent"
+            visibleOrGone="@{viewModel.isPositionConditionVisible}">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_condition_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionConditionNotifier}"
+            android:focusable="false"
+            android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_serial"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_serial"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/fragment_position_details_guideline"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_price"
+            visibleOrGone="@{viewModel.isPositionSerialVisible}">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_serial_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            android:focusable="false"
+            android:enabled="false"
+                android:inputType="text"
+                android:text="@={viewModel.positionSerialNotifier}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_origin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_origin"
+            app:layout_constraintEnd_toStartOf="@id/fragment_position_details_guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_serial"
+            visibleOrGone="@{viewModel.isPositionOriginVisible}">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_origin_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionOriginNotifier}"
+            android:focusable="false"
+            android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_total"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_total"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/fragment_position_details_guideline"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_serial"
+            visibleOrGone="@{viewModel.isPositionTotalVisible}">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_total_input"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:enabled="false"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionTotalNotifier}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_add_date"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_add_date"
+            app:layout_constraintEnd_toStartOf="@id/fragment_position_details_guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_origin"
+            visibleOrGone="@{viewModel.isPositionAddDateVisible}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_add_date_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.positionAddDateNotifier}"
+                android:enabled="false"
+                android:focusable="false"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_position_details_update_date"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/fragment_position_details_update_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/fragment_position_details_guideline"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_total"
+            visibleOrGone="@{viewModel.isPositionUpdateDateVisible}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_position_details_update_date_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:focusable="false"
+                android:inputType="text"
+                android:text="@={viewModel.positionUpdateDateNotifier}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/fragment_position_details_barrier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="fragment_position_details_add_date,fragment_position_details_update_date" />
 
         <ImageView
             android:id="@+id/fragment_position_details_image"
@@ -33,59 +309,9 @@
             android:layout_marginTop="10dp"
             android:src="@mipmap/ic_camera"
             visibleOrGone="@{viewModel.isPositionImageVisible}"
-            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_name"
+            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_barrier"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-        <TextView
-            android:id="@+id/fragment_position_details_rating_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="32dp"
-            visibleOrGone="@{viewModel.isPositionRatingVisible}"
-            app:layout_constraintTop_toBottomOf="@id/fragment_position_details_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="Ocena"/>
-
-        <RatingBar
-            android:id="@+id/fragment_position_details_rating_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:numStars="5"
-            visibleOrGone="@{viewModel.isPositionRatingVisible}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_position_details_rating_text" />
-
-        <TextView
-            android:id="@+id/fragment_position_details_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:layout_marginHorizontal="20dp"
-            android:maxLength ="2000"
-            android:scrollHorizontally="false"
-            android:text="@={viewModel.positionDescriptionNotifier}"
-            visibleOrGone="@{viewModel.isPositionDescriptionVisible}"
-            android:enabled="@{!viewModel.isLoading}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_position_details_rating_bar" />
-
-        <TextView
-            android:id="@+id/fragment_position_details_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:layout_marginHorizontal="20dp"
-            android:maxLength ="2000"
-            android:scrollHorizontally="false"
-            android:text="@={viewModel.positionTotalNotifier}"
-            visibleOrGone="@{viewModel.isPositionTotalVisible}"
-            android:enabled="@{!viewModel.isLoading}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_position_details_description" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addPosition"
@@ -107,5 +333,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

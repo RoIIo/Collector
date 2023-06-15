@@ -71,10 +71,6 @@ class PositionEntryFragment : Fragment()  {
                 openCamera()
             }
         }
-        viewBinding.fragmentPositionEntryRatingBar.setOnClickListener(){
-            var ratingBar = it as RatingBar
-            viewModel.positionRatingNotifier.value = ratingBar.rating.toInt()
-        }
     }
 
     private fun openCamera() {

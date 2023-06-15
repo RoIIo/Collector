@@ -29,15 +29,43 @@ class PositionDetailsViewModel @Inject constructor(): ViewModel() {
     val isPositionTotalVisible: LiveData<Boolean> = positionTotalNotifier.map { !it.isNullOrEmpty() }
 
     var positionDescriptionNotifier: MutableLiveData<String> = MutableLiveData()
-    val isPositionDescriptionVisible: LiveData<Boolean> = positionNameNotifier.map { !it.isNullOrEmpty() }
+    val isPositionDescriptionVisible: LiveData<Boolean> = positionDescriptionNotifier.map { !it.isNullOrEmpty() }
 
-    var positionRatingNotifier: MutableLiveData<Int?> = MutableLiveData()
-    val isPositionRatingVisible: LiveData<Boolean> = positionRatingNotifier.map { it != null }
+    var positionNotesNotifier: MutableLiveData<String> = MutableLiveData()
+    val isPositionNotesVisible: LiveData<Boolean> = positionNotesNotifier.map { !it.isNullOrEmpty() }
+
+    var positionProducentNotifier: MutableLiveData<String> = MutableLiveData()
+    val isPositionProducentVisible: LiveData<Boolean> = positionProducentNotifier.map { !it.isNullOrEmpty() }
+
+    var positionPriceNotifier: MutableLiveData<String> = MutableLiveData()
+    val isPositionPriceVisible: LiveData<Boolean> = positionPriceNotifier.map { !it.isNullOrEmpty() }
+
+    var positionConditionNotifier: MutableLiveData<String> = MutableLiveData()
+    val isPositionConditionVisible: LiveData<Boolean> = positionConditionNotifier.map { !it.isNullOrEmpty() }
+
+    var positionSerialNotifier: MutableLiveData<String> = MutableLiveData()
+    val isPositionSerialVisible: LiveData<Boolean> = positionSerialNotifier.map { !it.isNullOrEmpty() }
+
+    var positionOriginNotifier: MutableLiveData<String> = MutableLiveData()
+    val isPositionOriginVisible: LiveData<Boolean> = positionOriginNotifier.map { !it.isNullOrEmpty() }
+
+    var positionAddDateNotifier: MutableLiveData<String> = MutableLiveData()
+    val isPositionAddDateVisible: LiveData<Boolean> = positionAddDateNotifier.map { !it.isNullOrEmpty() }
+
+    var positionUpdateDateNotifier: MutableLiveData<String> = MutableLiveData()
+    val isPositionUpdateDateVisible: LiveData<Boolean> = positionAddDateNotifier.map { !it.isNullOrEmpty() }
     fun initialize(position : Position){
         positionNameNotifier.value = position.name
         positionTotalNotifier.value = position.total?.toString()
         positionDescriptionNotifier.value = position.description
-        positionRatingNotifier.value = position.rating
+        positionNotesNotifier.value = position.notes
+        positionProducentNotifier.value = position.producent
+        positionPriceNotifier.value = position.price.toString()
+        positionConditionNotifier.value = position.condition
+        positionSerialNotifier.value = position.serial
+        positionOriginNotifier.value = position.origin
+        positionAddDateNotifier.value = position.addDate
+        positionUpdateDateNotifier.value = position.updateDate
         modifyPositionNotifier.value = false
         loadImage(position.imagePath)
     }
